@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>DAYNEWS | Home</title>
+    <title>HOYNEWS | Home</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- Favicon -->
@@ -24,14 +24,13 @@
 </head>
 
 <body>
-    <!-- Header -->
     <header>
         <div class="container-fluid nav-observer">
             <div class="row align-items-center bg-primary px-lg-5">
                 <div class="col-12 col-md-8">
                     <div class="d-flex justify-content-between">
                         <?php date_default_timezone_set("Asia/jakarta"); ?>
-                        <div class="d-inline-flex py-2"><span class="text-light text-uppercase" style="font-weight: bolder;"><?php echo date("l, d M Y"); ?></span></div>
+                        <div class="d-inline-flex py-2"><span class="text-light text-uppercase" style="font-size: 18px; font-weight: bolder;"><?php echo date("l, d M Y"); ?></span></div>
                     </div>
                 </div>
                 <div class="col-md-4 text-right d-none d-md-block text-white">
@@ -43,7 +42,7 @@
         <div class="container-fluid p-0">
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
                 <a href="" class="navbar-brand d-none d-lg-block">
-                    <h1 class="m-0 display-5 text-uppercase text-light"><span class="text-primary">2Day</span>News</h1>
+                    <h1 class="m-0 display-5 text-uppercase text-light"><span class="text-primary">Hoy</span>News</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -74,8 +73,8 @@
                     <nav class="breadcrumb bg-transparent m-0 p-0">
                         <a class="breadcrumb-item" href="index.php">Home</a>
                         <a class="breadcrumb-item" href="category.php">Category</a>
-                        <a class="breadcrumb-item" href="<?= $posts['nama_category']; ?>_news.php"><?= $posts['nama_category']; ?></a>
-                        <span class="breadcrumb-item active"><?= $posts['judul']; ?></span>
+                        <a class="breadcrumb-item" href="">Technology</a>
+                        <span class="breadcrumb-item active">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, cumque.</span>
                     </nav>
                 </div>
             </div>
@@ -259,9 +258,8 @@
         <div class="row py-4">
             <div class="col-lg-4 col-md-6 mb-5">
                 <h5 class="mb-4 text-white text-uppercase font-weight-bold">Get In Touch</h5>
-                <p class="font-weight-medium"><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
-                <p class="font-weight-medium"><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
-                <p class="font-weight-medium"><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                <p class="font-weight-medium"><i class="fa fa-map-marker-alt mr-2"></i>Bandung, Indonesia</p>
+                <p class="font-weight-medium"><i class="fa fa-phone-alt mr-2"></i>+62 834 5678 9123</p>
                 <h6 class="mt-4 mb-3 text-white text-uppercase font-weight-bold">Follow Us</h6>
                 <div class="d-flex justify-content-start">
                     <a class="btn btn-lg btn-secondary btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
@@ -272,7 +270,7 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-5">
-                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Flickr Photos</h5>
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Media Partner</h5>
                 <div class="row">
                     <div class="col-4 mb-3">
                         <a href=""><img class="w-100" src="img/news-110x110-1.jpg" alt=""></a>
@@ -295,37 +293,18 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-5">
-                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Categories</h5>
-                <div class="m-n1">
-                    <a href="" class="btn btn-sm btn-secondary m-1">Politics</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Corporate</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Health</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Education</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Science</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Foods</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Entertainment</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Travel</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Lifestyle</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Politics</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Corporate</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Health</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Education</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Science</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Foods</a>
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Quick Links</h5>
+                <div class="d-flex flex-column justify-content-start">
+                    <a class="text-white-50" href="index.php"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                    <a class="text-white-50" href="category.php"><i class="fa fa-angle-right mr-2"></i>Category</a>
+                    <a class="text-white-50" href="contact.php"><i class="fa fa-angle-right mr-2"></i>Contact</a>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="container-fluid py-4 px-sm-3 px-md-5" style="background: #111111;">
-        <p class="m-0 text-center">&copy; <a href="#">Your Site Name</a>. 2024.x</a>
-        </p>
+        <p class="m-0 text-center">&copy; <a href="#">Your Site Name</a>. 2024.</a></p>
     </div>
 
     <a href="#" class="btn btn-primary btn-square back-to-top"><i class="fa fa-arrow-up"></i></a>
