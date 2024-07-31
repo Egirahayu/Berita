@@ -1,5 +1,5 @@
 <?php
-// require '../php/functions.php';
+// require '../functions.php';
 ?>
 
 <!DOCTYPE html>
@@ -11,18 +11,10 @@
 
   <!-- Css Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-  <!-- Datatable -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-
   <!-- Css Icon Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <!-- Css Dashboard -->
-  <link href="../dashboard.css" rel="stylesheet">
+  <link href="dashboard.css" rel="stylesheet">
 
   <title>HOYNEWS | Dashboard</title>
 </head>
@@ -67,7 +59,7 @@
           <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="../index.php">
+                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="index.php">
                   <svg class="bi">
                     <use xlink:href="#house-fill" />
                   </svg>
@@ -75,7 +67,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../scrape/index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="scrape/index.php">
                   <svg class="bi">
                     <use xlink:href="#file-earmark-text" />
                   </svg>
@@ -83,7 +75,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../posts/index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="posts/index.php">
                   <svg class="bi">
                     <use xlink:href="#file-earmark-text" />
                   </svg>
@@ -91,7 +83,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../category/index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="category/index.php">
                   <svg class="bi">
                     <use xlink:href="#cart" />
                   </svg>
@@ -99,7 +91,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../author/index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="author/index.php">
                   <svg class="bi">
                     <use xlink:href="#people" />
                   </svg>
@@ -107,7 +99,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="comment/index.php">
                   <svg class="bi">
                     <use xlink:href="#puzzle" />
                   </svg>
@@ -120,7 +112,7 @@
 
             <ul class="nav flex-column mb-auto">
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../logout.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="logout.php">
                   <svg class="bi">
                     <use xlink:href="#door-closed" />
                   </svg>
@@ -133,57 +125,17 @@
       </div>
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div class="container">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Comment</h1>
-          </div>
-
-          <div class="table-responsive col-lg-11">
-            <table class="table table-bordered  table-striped table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col" width="350px">Title</th>
-                  <th scope="col" width="300px">Comment</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-
-              <?php $i = 1; ?>
-
-              <tbody>
-                <!-- <?php foreach ($comment as $coment) : ?>
-                  <tr>
-                    <td><?= $i; ?>.</td>
-                    <td><?= $coment['judul']; ?></td>
-                    <td><?= $coment['comment']; ?></td>
-                    <td><?= date("d F Y H:i:s", strtotime($coment['tanggal'])); ?></td>
-                    <td>
-                      <a href="../php/comment/delete.php?id=<?= $coment['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>
-                    </td>
-                  </tr>
-                  <?php $i++; ?>
-                <?php endforeach; ?> -->
-              </tbody>
-            </table>
-          </div>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Welcome back, Admin</h1>
         </div>
       </main>
     </div>
   </div>
 
-  <!-- JS Dashboard -->
-  <script src="../dashboard.js"></script>
-  <!-- JS Feather icon -->
-  <script src="https://unpkg.com/feather-icons"></script>
+  <!-- JS Lokal -->
+  <script src="dashboard.js"></script>
   <!-- JS Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-  <script>
-    feather.replace();
-  </script>
-
 </body>
 
 </html>

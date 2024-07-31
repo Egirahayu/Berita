@@ -1,5 +1,5 @@
 <?php
-// require '../php/functions.php';
+// require '../functions.php';
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +75,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../scrape/index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="index.php">
                   <svg class="bi">
                     <use xlink:href="#file-earmark-text" />
                   </svg>
@@ -107,7 +107,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="../comment/index.php">
                   <svg class="bi">
                     <use xlink:href="#puzzle" />
                   </svg>
@@ -135,38 +135,49 @@
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="container">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Comment</h1>
+            <h1 class="h2">Create New Menu</h1>
           </div>
 
-          <div class="table-responsive col-lg-11">
-            <table class="table table-bordered  table-striped table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col" width="350px">Title</th>
-                  <th scope="col" width="300px">Comment</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
+          <div class="col-lg-8">
+            <form method="post" action="" class="mb-5">
+              <div class="mb-3">
+                <label for="nama" class="form-label">URL to Scrape</label>
+                <input type="text" class="form-control" id="nama" name="nama" required autofocus value="">
+              </div>
+              <div class="mt-3 mb-3">
+                <label for="slug" class="form-label">Post Tittle</label>
+                <input type="text" class="form-control" id="slug" name="slug" required value="">
+              </div>
+              <button type="submit" class="btn btn-primary">Pilih Judul</button>
+              <div class="mt-5">
+                <div class="card p-3">
+                  <h5>Menerbitkan</h5>
+                  <p>Posting Type: pasca <a href="">Sunting</a></p>
+                  <p>Status: Diterbitkan <a href="">Ubah</a></p>
 
-              <?php $i = 1; ?>
+                  <button type="submit" class="btn btn-primary mt-2">Create Menu</button>
+                </div>
+              </div>
 
-              <tbody>
-                <!-- <?php foreach ($comment as $coment) : ?>
-                  <tr>
-                    <td><?= $i; ?>.</td>
-                    <td><?= $coment['judul']; ?></td>
-                    <td><?= $coment['comment']; ?></td>
-                    <td><?= date("d F Y H:i:s", strtotime($coment['tanggal'])); ?></td>
-                    <td>
-                      <a href="../php/comment/delete.php?id=<?= $coment['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>
-                    </td>
-                  </tr>
-                  <?php $i++; ?>
-                <?php endforeach; ?> -->
-              </tbody>
-            </table>
+              <div class="mt-5">
+                <div class="card p-3">
+                  <h5>Opsi Ekstrak</h5>
+
+                  <form method="post" action="" class="mb-5">
+                    <div class="mt-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <label class="form-check-label" for="exampleCheck1">Muat JavaScript</label>
+                      <p>Beberapa konten mungkin memerlukan javascript diaktifkan untuk ditampilkan dengan benar. Centang kotak ini untuk mengaktikan javascript ketika memilih content.</p>
+                    </div>
+                    <div class="mt-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <label class="form-check-label" for="exampleCheck1">Muat JavaScript</label>
+                      <p>Beberapa gambar tidak akan memuat karena konflik lintas domain. Gunakan fitur ini untuk memuat gambar yang dibatasi ini. Namun, itu tidak berfungsi dengan semua konfigurasi server. Gunakan dengan hati-hati</p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </main>
@@ -179,11 +190,6 @@
   <script src="https://unpkg.com/feather-icons"></script>
   <!-- JS Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-  <script>
-    feather.replace();
-  </script>
-
 </body>
 
 </html>
