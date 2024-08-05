@@ -86,7 +86,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="position-relative mb-3">
-                        <img class="img-fluid w-100" src="img/news-700x435-1.jpg" style="object-fit: cover;">
+                        <img class="img-fluid w-100" src="img/EVOS M1.jpg" style="object-fit: cover;">
                         <div class="bg-white border border-top-0 p-4">
                             <div class="mb-3">
                                 <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">Business</a>
@@ -124,7 +124,7 @@
                         </div>
                         <div class="bg-white border border-top-0 p-4">
                             <div class="media mb-4">
-                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                 <div class="media-body">
                                     <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
                                     <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
@@ -133,14 +133,14 @@
                                 </div>
                             </div>
                             <div class="media">
-                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                 <div class="media-body">
                                     <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
                                     <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
                                         accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
                                     <button class="btn btn-sm btn-outline-secondary">Reply</button>
                                     <div class="media mt-4">
-                                        <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                        <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                         <div class="media-body">
                                             <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
                                             <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor
@@ -198,7 +198,7 @@
                         </div>
                         <div class="bg-white border border-top-0 p-3">
                             <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
-                                <img class="img-fluid" src="img/news-110x110-1.jpg" alt="">
+                                <img class="img-fluid" src="img/EVOS.jpg" alt="">
                                 <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                     <div class="mb-2">
                                         <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">Business</a>
@@ -208,7 +208,7 @@
                                 </div>
                             </div>
                             <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
-                                <img class="img-fluid" src="img/news-110x110-2.jpg" alt="">
+                                <img class="img-fluid" src="img/EVOS.jpg" alt="">
                                 <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                     <div class="mb-2">
                                         <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">Business</a>
@@ -218,7 +218,7 @@
                                 </div>
                             </div>
                             <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
-                                <img class="img-fluid" src="img/news-110x110-3.jpg" alt="">
+                                <img class="img-fluid" src="img/EVOS.jpg" alt="">
                                 <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                     <div class="mb-2">
                                         <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">Business</a>
@@ -228,7 +228,7 @@
                                 </div>
                             </div>
                             <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
-                                <img class="img-fluid" src="img/news-110x110-4.jpg" alt="">
+                                <img class="img-fluid" src="img/EVOS.jpg" alt="">
                                 <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                     <div class="mb-2">
                                         <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">Business</a>
@@ -238,7 +238,7 @@
                                 </div>
                             </div>
                             <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
-                                <img class="img-fluid" src="img/news-110x110-5.jpg" alt="">
+                                <img class="img-fluid" src="img/EVOS.jpg" alt="">
                                 <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                     <div class="mb-2">
                                         <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">Business</a>
@@ -254,57 +254,8 @@
         </div>
     </div>
 
-    <div class="container-fluid bg-dark pt-5 px-sm-3 px-md-5 mt-5">
-        <div class="row py-4">
-            <div class="col-lg-4 col-md-6 mb-5">
-                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Get In Touch</h5>
-                <p class="font-weight-medium"><i class="fa fa-map-marker-alt mr-2"></i>Bandung, Indonesia</p>
-                <p class="font-weight-medium"><i class="fa fa-phone-alt mr-2"></i>+62 834 5678 9123</p>
-                <h6 class="mt-4 mb-3 text-white text-uppercase font-weight-bold">Follow Us</h6>
-                <div class="d-flex justify-content-start">
-                    <a class="btn btn-lg btn-secondary btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-lg btn-secondary btn-lg-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-lg btn-secondary btn-lg-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-lg btn-secondary btn-lg-square mr-2" href="#"><i class="fab fa-instagram"></i></a>
-                    <a class="btn btn-lg btn-secondary btn-lg-square" href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-5">
-                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Media Partner</h5>
-                <div class="row">
-                    <div class="col-4 mb-3">
-                        <a href=""><img class="w-100" src="img/news-110x110-1.jpg" alt=""></a>
-                    </div>
-                    <div class="col-4 mb-3">
-                        <a href=""><img class="w-100" src="img/news-110x110-2.jpg" alt=""></a>
-                    </div>
-                    <div class="col-4 mb-3">
-                        <a href=""><img class="w-100" src="img/news-110x110-3.jpg" alt=""></a>
-                    </div>
-                    <div class="col-4 mb-3">
-                        <a href=""><img class="w-100" src="img/news-110x110-4.jpg" alt=""></a>
-                    </div>
-                    <div class="col-4 mb-3">
-                        <a href=""><img class="w-100" src="img/news-110x110-5.jpg" alt=""></a>
-                    </div>
-                    <div class="col-4 mb-3">
-                        <a href=""><img class="w-100" src="img/news-110x110-1.jpg" alt=""></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-5">
-                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Quick Links</h5>
-                <div class="d-flex flex-column justify-content-start">
-                    <a class="text-white-50" href="index.php"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                    <a class="text-white-50" href="category.php"><i class="fa fa-angle-right mr-2"></i>Category</a>
-                    <a class="text-white-50" href="contact.php"><i class="fa fa-angle-right mr-2"></i>Contact</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid py-4 px-sm-3 px-md-5" style="background: #111111;">
-        <p class="m-0 text-center">&copy; <a href="#">Your Site Name</a>. 2024.</a></p>
+        <p class="m-0 text-center">&copy; <a href="#">HOYNEWS</a>. 2024.</a></p>
     </div>
 
     <a href="#" class="btn btn-primary btn-square back-to-top"><i class="fa fa-arrow-up"></i></a>

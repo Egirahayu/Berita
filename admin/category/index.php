@@ -53,7 +53,7 @@
   </svg>
 
   <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="admin.php">Dashboard</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="../index.php">Dashboard</a>
   </header>
 
   <div class="container-fluid">
@@ -67,15 +67,7 @@
           <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="../index.php">
-                  <svg class="bi">
-                    <use xlink:href="#house-fill" />
-                  </svg>
-                  Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../scrape/index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="../index.php">
                   <svg class="bi">
                     <use xlink:href="#file-earmark-text" />
                   </svg>
@@ -139,8 +131,6 @@
           </div>
 
           <div class="table-responsive col-lg-4">
-            <a href="../php/category/create.php" class="btn btn-primary mb-3">Create Category</a>
-
             <table class="table table-bordered  table-striped table-sm">
               <thead>
                 <tr>

@@ -1,5 +1,55 @@
 <?php
-// require '../functions.php';
+include('simple_html_dom.php');
+
+function scrape_data($url)
+{
+  $html = file_get_html($url);
+
+  $infoDiv = $html->find('div.info', 0);
+  $tittleElement = $infoDiv->find('h1', 0);
+  $judul = $tittleElement->plaintext;
+
+  $writerDiv = $html->find('div.writer', 0);
+  $penulisElement = $writerDiv->find('a', 0);
+  $penulis = $penulisElement->plaintext;
+
+  $date = $html->find('div.date-article', 0);
+  $tanggalElement = $date->find('span', 0);
+  $tanggal = $tanggalElement->plaintext;
+
+  $categories = $html->find('div.top-detail', 0);
+  $categoryElement = $categories->find('a', 0);
+  $category = $categoryElement->plaintext;
+
+  $article = $html->find('article.detail-content', 0);
+
+  if ($article) {
+    $paragraphs = $article->find('p');
+    $allTexts = [];
+
+    foreach ($paragraphs as $p) {
+      if (!$p->class) {
+        $p->style = "margin-bottom: 20px;";
+        $allTexts[] = $p->outertext;
+      }
+    }
+
+    $teks = implode("\n", $allTexts);
+  }
+
+  $figure = $html->find('figure.img-cover', 0);
+  $imgElement = $figure->find('img', 0);
+  $image_url = $imgElement ? $imgElement->src : '';
+
+  return [
+    'judul' => $judul,
+    'penulis' => $penulis,
+    'teks' => $teks,
+    'tanggal' => $tanggal,
+    'category' => $category,
+    'image_url' => $image_url
+  ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,8 +59,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Libraries Stylesheet -->
+  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="../css/style.css" rel="stylesheet">
+
   <!-- Css Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+  <!-- Datatable -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
   <!-- Css Icon Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <!-- Css Dashboard -->
@@ -45,7 +116,7 @@
   </svg>
 
   <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="admin.php">Dashboard</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="index.php">Dashboard</a>
   </header>
 
   <div class="container-fluid">
@@ -59,15 +130,7 @@
           <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="index.php">
-                  <svg class="bi">
-                    <use xlink:href="#house-fill" />
-                  </svg>
-                  Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="scrape/index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="index.php">
                   <svg class="bi">
                     <use xlink:href="#file-earmark-text" />
                   </svg>
@@ -125,17 +188,79 @@
       </div>
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Welcome back, Admin</h1>
+        <div class="container">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Create New Posts</h1>
+          </div>
+
+          <div class="col-lg-8">
+            <form method="post" action="" class="mb-5">
+              <div class="mb-3">
+                <label for="url" class="form-label">URL to Scrape</label>
+                <input type="text" class="form-control" id="url" name="url" required autofocus value="">
+              </div>
+              <button type="submit" class="btn btn-primary">Tambah Post</button>
+            </form>
+
+            <?php
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['url'])) {
+              $url = $_POST['url'];
+              $data = scrape_data($url);
+              $judul = $data['judul'];
+              $penulis = $data['penulis'];
+              $teks = $data['teks'];
+              $tanggal = $data['tanggal'];
+              $category = $data['category'];
+              $image_url = $data['image_url'];
+            ?>
+              <div class="position-relative mb-3">
+                <img class="img-fluid w-100" src="<?= htmlspecialchars($image_url) ?>" style="object-fit: cover;">
+                <div class="bg-white border border-top-0 p-4">
+                  <div class="mb-3">
+                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="" style="text-decoration: none;"><?= htmlspecialchars($category); ?></a>
+                    <a class="text-body" href="" style="text-decoration: none;"><?= htmlspecialchars($tanggal); ?></a>
+                  </div>
+                  <h1 class="mb-3 text-secondary text-uppercase font-weight-bold"><?= htmlspecialchars($judul); ?></h1>
+                  <p> <?= $teks; ?> </p>
+                </div>
+                <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                  <div class="d-flex align-items-center">
+                    <img class="rounded-circle mr-2" src="../../img/user.png" width="25" height="25" alt="">
+                    <span><?= htmlspecialchars($penulis); ?></span>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="ml-3"><i class="far fa-eye mr-2"></i>12345</span>
+                    <span class="ml-3"><i class="far fa-comment mr-2"></i>123</span>
+                  </div>
+                </div>
+              </div>
+            <?php
+            }
+            ?>
+          </div>
         </div>
       </main>
     </div>
   </div>
 
-  <!-- JS Lokal -->
+  <script src="../js/main.js"></script>
+  <!-- JS Dashboard -->
   <script src="dashboard.js"></script>
+  <!-- JS Feather icon -->
+  <script src="https://unpkg.com/feather-icons"></script>
   <!-- JS Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+  <script>
+    feather.replace();
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#myTable').DataTable();
+    });
+  </script>
+
 </body>
 
 </html>
