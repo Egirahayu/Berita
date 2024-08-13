@@ -1,4 +1,5 @@
 <?php
+include('simple_html_dom.php');
 
 function koneksi()
 {
@@ -19,48 +20,72 @@ function query($sql)
   return $rows;
 }
 
-function upload()
+function scrape_data($url, $site)
 {
-  $nama_file = $_FILES['gambar']['name'];
-  $tipe_file = $_FILES['gambar']['type'];
-  $ukuran_file = $_FILES['gambar']['size'];
-  $error = $_FILES['gambar']['error'];
-  $tmp_file = $_FILES['gambar']['tmp_name'];
+  $html = file_get_html($url);
 
-  if ($error == 4) {
-    return 'nophoto.jpg';
+  switch ($site) {
+    case 'kompas':
+      $titleDiv = $html->find('div.col-bs10-10', 0);
+      if ($titleDiv) {
+        $titleElement = $titleDiv->find('h1.read__title', 0);
+        $title = $titleElement->plaintext;
+      }
+
+      $authorDiv = $html->find('div.credit-title-name', 0);
+      if ($authorDiv) {
+        $authorElement = $authorDiv->find('h6', 0);
+        $author = $authorElement->plaintext;
+      }
+
+      $bodyDiv = $html->find('div.read__content', 0);
+      if ($bodyDiv) {
+        $paragraphs = $bodyDiv->find('p');
+        $allTexts = [];
+        foreach ($paragraphs as $p) {
+          if (!$p->class) {
+            $allTexts[] = $p->plaintext;
+          }
+        }
+        $body = implode("\n", $allTexts);
+      }
+      break;
+
+    case 'one':
+      $titleDiv = $html->find('div.col-lg-8', 0);
+      if ($titleDiv) {
+        $titleElement = $titleDiv->find('h1.post-title', 0);
+        $title = $titleElement->plaintext;
+      }
+
+      $authorDiv = $html->find('div.col-lg-8', 0);
+      if ($authorDiv) {
+        $authorElement = $authorDiv->find('a.author', 0);
+        $author = $authorElement->plaintext;
+      }
+
+      $bodyDiv = $html->find('div.post-content', 0);
+      if ($bodyDiv) {
+        $paragraphs = $bodyDiv->find('p');
+        $allTexts = [];
+        foreach ($paragraphs as $p) {
+          if (!$p->class) {
+            $allTexts[] = $p->plaintext;
+          }
+        }
+        $body = implode("\n", $allTexts);
+      }
+      break;
+
+    default:
+      return ['title' => 'Unknown site', 'author' => 'Unknown', 'body' => ''];
   }
 
-  $daftar_gambar = ['jpg', 'jpeg', 'png'];
-  $ekstensi_file = explode('.', $nama_file);
-  $ekstensi_file = strtolower(end($ekstensi_file));
-  if (!in_array($ekstensi_file, $daftar_gambar)) {
-    echo "<script>
-            alert('Yang anda pilih bukan gambar!');
-          </script>";
-    return false;
-  }
-
-  if ($tipe_file != 'image/jpeg' && $tipe_file != 'image/png') {
-    echo "<script>
-                alert('Yang anda pilih bukan gambar!');
-              </script>";
-    return false;
-  }
-
-  if ($ukuran_file > 5000000) {
-    echo "<script>
-                alert('Ukuran terlalu besar!');
-              </script>";
-    return false;
-  }
-
-  $nama_file_baru = uniqid();
-  $nama_file_baru .= '.';
-  $nama_file_baru .= $ekstensi_file;
-  move_uploaded_file($tmp_file, '../../img/' . $nama_file_baru);
-
-  return $nama_file_baru;
+  return [
+    'title' => $title,
+    'author' => $author,
+    'body' => $body
+  ];
 }
 
 // Posts
@@ -68,56 +93,13 @@ function add_posts($data)
 {
   $conn = koneksi();
 
-  $judul = htmlspecialchars($data['judul']);
-  $body = htmlspecialchars($data['body']);
-  $publish = htmlspecialchars($data['publish']);
-  $category_id = htmlspecialchars($data['category_id']);
-  $author_id = htmlspecialchars($data['author_id']);
-  // $img = htmlspecialchars($data['img']);
-
-  $img = upload();
-  if (!$img) {
-    return false;
-  }
+  $title = mysqli_real_escape_string($conn, htmlspecialchars($data['title']));
+  $body = mysqli_real_escape_string($conn, htmlspecialchars($data['body']));
+  $author = mysqli_real_escape_string($conn, htmlspecialchars($data['author']));
 
   $query = "INSERT INTO posts
               VALUES
-            ('', '$judul', '$img', '$body', '$publish', '$category_id', '$author_id')";
-
-  mysqli_query($conn, $query);
-
-  return mysqli_affected_rows($conn);
-}
-
-function update_posts($data)
-{
-  $conn = koneksi();
-  $id = ($data['id']);
-  $judul = htmlspecialchars($data['judul']);
-  $body = htmlspecialchars($data['body']);
-  $publish = htmlspecialchars($data['publish']);
-  $category_id = htmlspecialchars($data['category_id']);
-  $author_id = htmlspecialchars($data['author_id']);
-  $gambar_lama = htmlspecialchars($data['gambar_lama']);
-
-  $img = upload();
-  if (!$img) {
-    return false;
-  }
-
-  if ($img == 'nophoto.jpg') {
-    $img = $gambar_lama;
-  }
-
-  $query = "UPDATE posts SET
-                judul = '$judul',
-                body = '$body',
-                publish = '$publish',
-                category_id = '$category_id',
-                author_id = '$author_id',
-                img = '$img'
-                WHERE id = '$id'
-                ";
+              ('', '$title', '', '', '', '$body', '', '$author')";
 
   mysqli_query($conn, $query);
 
@@ -133,38 +115,6 @@ function delete_posts($id)
 }
 
 // Category
-function add_category($data)
-{
-  $conn = koneksi();
-
-  $nama_category = htmlspecialchars($data['nama_category']);
-
-  $query = "INSERT INTO category
-              VALUES
-            ('', '$nama_category')";
-
-  mysqli_query($conn, $query);
-
-  return mysqli_affected_rows($conn);
-}
-
-function update_category($data)
-{
-  $conn = koneksi();
-
-  $id = ($data['id']);
-  $nama_category = htmlspecialchars($data['nama_category']);
-
-  $query = "UPDATE category SET
-                nama_category = '$nama_category'
-                WHERE id = '$id'
-                ";
-
-  mysqli_query($conn, $query);
-
-  return mysqli_affected_rows($conn);
-}
-
 function delete_category($id)
 {
   $conn = koneksi();
@@ -174,38 +124,6 @@ function delete_category($id)
 }
 
 // Author
-function add_author($data)
-{
-  $conn = koneksi();
-
-  $nama_author = htmlspecialchars($data['nama_author']);
-
-  $query = "INSERT INTO author
-              VALUES
-            ('', '$nama_author')";
-
-  mysqli_query($conn, $query);
-
-  return mysqli_affected_rows($conn);
-}
-
-function update_author($data)
-{
-  $conn = koneksi();
-
-  $id = ($data['id']);
-  $nama_author = htmlspecialchars($data['nama_author']);
-
-  $query = "UPDATE author SET
-                nama_author = '$nama_author'
-                WHERE id = '$id'
-                ";
-
-  mysqli_query($conn, $query);
-
-  return mysqli_affected_rows($conn);
-}
-
 function delete_author($id)
 {
   $conn = koneksi();

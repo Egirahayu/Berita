@@ -1,54 +1,25 @@
 <?php
-include('simple_html_dom.php');
+require 'functions.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $urls = explode("\n", trim($_POST['urls']));
+  $site = $_POST['site'];
 
-function scrape_data($url)
-{
-  $html = file_get_html($url);
+  foreach ($urls as $url) {
+    $url = trim($url);
+    if (!empty($url)) {
+      $data = scrape_data($url, $site);
 
-  $infoDiv = $html->find('div.info', 0);
-  $tittleElement = $infoDiv->find('h1', 0);
-  $judul = $tittleElement->plaintext;
-
-  $writerDiv = $html->find('div.writer', 0);
-  $penulisElement = $writerDiv->find('a', 0);
-  $penulis = $penulisElement->plaintext;
-
-  $date = $html->find('div.date-article', 0);
-  $tanggalElement = $date->find('span', 0);
-  $tanggal = $tanggalElement->plaintext;
-
-  $categories = $html->find('div.top-detail', 0);
-  $categoryElement = $categories->find('a', 0);
-  $category = $categoryElement->plaintext;
-
-  $article = $html->find('article.detail-content', 0);
-
-  if ($article) {
-    $paragraphs = $article->find('p');
-    $allTexts = [];
-
-    foreach ($paragraphs as $p) {
-      if (!$p->class) {
-        $p->style = "margin-bottom: 20px;";
-        $allTexts[] = $p->outertext;
+      if (add_posts($data) > 0) {
+        echo "<script>
+                alert('Data Added successfully!');
+              </script>";
+      } else {
+        echo "<script>
+                alert('Data Failed to add!');
+              </script>";
       }
     }
-
-    $teks = implode("\n", $allTexts);
   }
-
-  $figure = $html->find('figure.img-cover', 0);
-  $imgElement = $figure->find('img', 0);
-  $image_url = $imgElement ? $imgElement->src : '';
-
-  return [
-    'judul' => $judul,
-    'penulis' => $penulis,
-    'teks' => $teks,
-    'tanggal' => $tanggal,
-    'category' => $category,
-    'image_url' => $image_url
-  ];
 }
 ?>
 
@@ -196,47 +167,18 @@ function scrape_data($url)
           <div class="col-lg-8">
             <form method="post" action="" class="mb-5">
               <div class="mb-3">
-                <label for="url" class="form-label">URL to Scrape</label>
-                <input type="text" class="form-control" id="url" name="url" required autofocus value="">
+                <label for="urls" class="form-label">URLs to Scrape (one per line)</label>
+                <input class="form-control" id="urls" name="urls" rows="5" required></input>
               </div>
-              <button type="submit" class="btn btn-primary">Tambah Post</button>
+              <div class="mb-3">
+                <label for="site" class="form-label">Pilih Website</label>
+                <select class="form-control" id="site" name="site" required>
+                  <option value="kompas">Kompas</option>
+                  <option value="one">One Esports</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Scrape and Save</button>
             </form>
-
-            <?php
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['url'])) {
-              $url = $_POST['url'];
-              $data = scrape_data($url);
-              $judul = $data['judul'];
-              $penulis = $data['penulis'];
-              $teks = $data['teks'];
-              $tanggal = $data['tanggal'];
-              $category = $data['category'];
-              $image_url = $data['image_url'];
-            ?>
-              <div class="position-relative mb-3">
-                <img class="img-fluid w-100" src="<?= htmlspecialchars($image_url) ?>" style="object-fit: cover;">
-                <div class="bg-white border border-top-0 p-4">
-                  <div class="mb-3">
-                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="" style="text-decoration: none;"><?= htmlspecialchars($category); ?></a>
-                    <a class="text-body" href="" style="text-decoration: none;"><?= htmlspecialchars($tanggal); ?></a>
-                  </div>
-                  <h1 class="mb-3 text-secondary text-uppercase font-weight-bold"><?= htmlspecialchars($judul); ?></h1>
-                  <p> <?= $teks; ?> </p>
-                </div>
-                <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
-                  <div class="d-flex align-items-center">
-                    <img class="rounded-circle mr-2" src="../../img/user.png" width="25" height="25" alt="">
-                    <span><?= htmlspecialchars($penulis); ?></span>
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <span class="ml-3"><i class="far fa-eye mr-2"></i>12345</span>
-                    <span class="ml-3"><i class="far fa-comment mr-2"></i>123</span>
-                  </div>
-                </div>
-              </div>
-            <?php
-            }
-            ?>
           </div>
         </div>
       </main>

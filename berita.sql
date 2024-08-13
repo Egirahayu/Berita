@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2024 at 04:37 PM
+-- Generation Time: Aug 13, 2024 at 06:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,17 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `berita`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `author`
---
-
-CREATE TABLE `author` (
-  `id` int(11) NOT NULL,
-  `name_author` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -65,14 +54,14 @@ CREATE TABLE `comment` (
 
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
-  `tittle` varchar(200) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `title` varchar(250) NOT NULL,
   `img` varchar(50) NOT NULL,
   `view` int(11) NOT NULL,
   `coment` int(11) NOT NULL,
   `body` text NOT NULL,
   `date` date NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `author_id` int(11) NOT NULL
+  `author` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -93,12 +82,6 @@ CREATE TABLE `user` (
 --
 
 --
--- Indexes for table `author`
---
-ALTER TABLE `author`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -116,8 +99,7 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `category_id` (`category_id`),
-  ADD KEY `author_id` (`author_id`);
+  ADD KEY `FOREIGN` (`category_id`);
 
 --
 -- Indexes for table `user`
@@ -128,12 +110,6 @@ ALTER TABLE `user`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `author`
---
-ALTER TABLE `author`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -173,8 +149,7 @@ ALTER TABLE `comment`
 -- Constraints for table `posts`
 --
 ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`),
-  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
