@@ -1,0 +1,188 @@
+@import url("https://fonts.googleapis.com/css?family=Lora:400,400i|Open+Sans:300,400,600,700,800");
+
+h1 {
+  font-family: sans-serif;
+  color: #000;
+  font-weight: 300;
+}
+
+h1 {
+  font-size: 45px;
+  line-height: 61px;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #e8e8e8;
+  background-image: url(../img/bg-1.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+}
+
+.btn a:hover {
+  color: white;
+}
+
+a {
+  font-size: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus,
+a:hover {
+  color: #2e7eed;
+  text-decoration: none;
+}
+
+.privacy .block,
+.user-login .block .image img {
+  box-shadow: 0 7px 20px 0 rgba(0, 0, 0, 0.08);
+}
+
+.user-login {
+  height: 100%;
+  width: 100%;
+}
+
+.user-login .block {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .user-login .block {
+    flex-wrap: wrap;
+  }
+}
+
+.user-login .block .image {
+  flex-basis: 100%;
+  margin-right: 40px;
+}
+
+@media (max-width: 768px) {
+  .user-login .block .image {
+    flex-grow: 1;
+    text-align: center;
+    margin-bottom: 30px;
+    margin-right: 0;
+  }
+}
+
+.user-login .block .image img {
+  border-radius: 8px;
+}
+
+.user-login .block .content {
+  flex-basis: 100%;
+  align-self: center;
+  padding: 50px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .user-login .block .content {
+    flex-grow: 1;
+  }
+}
+
+.user-login .block .content .logo {
+  margin-bottom: 80px;
+}
+
+@media (max-width: 992px) {
+  .user-login .block .content .logo {
+    margin-bottom: 40px;
+  }
+}
+
+.user-login .block .content .title-text {
+  margin-bottom: 35px;
+}
+
+.user-login .block .content .title-text h3 {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #cccccc;
+}
+
+.user-login .block .content .new-acount {
+  margin-top: 20px;
+}
+
+.user-login .block .content .new-acount p,
+.user-login .block .content .new-acount a {
+  font-size: 14px;
+}
+
+.user-login .block .content .new-acount p a {
+  color: #000;
+}
+
+.form-control.main {
+  background: #fff;
+  padding: 15px 20px;
+  height: 48px;
+  margin-bottom: 20px;
+  border: 1px solid #cccccc;
+  font-size: 14px;
+}
+
+.form-control.main:focus {
+  border: 1px solid #2e7eed;
+  box-shadow: none;
+}
+
+textarea.form-control.main {
+  height: initial;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: #808080;
+  font-size: 14px;
+}
+
+.btn-main {
+  padding: 25px 45px;
+  border-radius: 3px;
+  background: #2e7eed;
+  color: #fff;
+  outline: none;
+}
+
+.btn-main:hover {
+  color: #fff;
+}
+
+.btn-main:focus {
+  color: #fff;
+  box-shadow: none;
+}
+
+.btn-main-sm {
+  padding: 15px 35px;
+  border-radius: 3px;
+  background: #2e7eed;
+  color: #fff;
+  outline: none;
+  font-size: 14px;
+}
+
+.btn-main-sm:hover {
+  color: #fff;
+}
+
+.btn-main-sm:focus {
+  color: #fff;
+  box-shadow: none;
+}

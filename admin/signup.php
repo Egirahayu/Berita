@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>HOYNEWS | Login</title>
+  <title>HOYNEWS | Sign Up</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <!-- Favicon -->
@@ -27,21 +27,21 @@
             <div class="content text-center">
               <img src="../img/Logo.png" width="230px" alt="">
               <div class="title-text">
-                <h3><b>Login</b></h3>
+                <h3><b>Sign Up</b></h3>
               </div>
               <form action="" method="post">
                 <!-- <?php if (isset($errorLogin)) : ?>
                   <p style="color: red; font-style: italic;">Username atau Password salah</p>
                 <?php endif; ?> -->
                 <!-- Username -->
-                <input class="form-control main box" type="text" id="username" name="username" placeholder="Username" required>
+                <input class="form-control main" type="text" id="username" name="username" placeholder="Username" required>
                 <!-- Password -->
-                <input class="form-control main box" type="password" id="password" name="password" placeholder="Password" required>
+                <input class="form-control main" type="password" id="password" name="password" placeholder="Password" required>
                 <!-- Submit Button -->
-                <button class="btn btn-main-sm box" type="submit" name="submit">LOGIN</button>
+                <button class="btn btn-main-sm box" type="submit" name="submit">SIGN UP</button>
               </form>
               <div class="new-acount">
-                <p class="text-secondary">Don't Have an account? <a href="signup.php" class="text-primary"> SIGN UP</a></p>
+                <p class="text-secondary">Already have an account? <a href="login.php" class="text-primary">LOGIN</a></p>
               </div>
             </div>
           </div>
