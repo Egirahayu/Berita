@@ -1,3 +1,54 @@
+<?php
+session_start();
+require 'functions.php';
+
+if (isset($_SESSION['username'])) {
+  header("Location: index.php");
+  exit;
+}
+
+if (isset($_POST['submit'])) {
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $cek_user = mysqli_query(koneksi(), "SELECT * FROM user WHERE username = '$username' AND roles = 'admin'");
+
+  if (mysqli_num_rows($cek_user) > 0) {
+    $row = mysqli_fetch_assoc($cek_user);
+    if (password_verify($password, $row['password'])) {
+      $_SESSION['username'] = $_POST['username'];
+      $_SESSION['hash'] = hash('sha256', $row['id_user'], false);
+
+      if (isset($_POST['remember'])) {
+        setcookie('username', $row['username'], time() + 60 * 60 * 24);
+        $hash = hash('sha256', $row['id_user']);
+        setcookie('hash', $hash, time() + 60 * 60 * 24);
+      }
+
+      if (hash('sha256', $row['id_user']) == $_SESSION['hash']) {
+        header("Location: index.php");
+        die;
+      }
+      header("Location: ../index.php");
+      die;
+    }
+  }
+}
+
+if (isset($_COOKIE['username']) && isset($_COOKIE['hash'])) {
+  $username = $_COOKIE['username'];
+  $hash = $_COOKIE['hash'];
+
+  $result = mysqli_query(koneksi(), "SELECT * FROM user WHERE username = '$username'");
+  $row = mysqli_fetch_assoc($result);
+
+  if ($hash === hash('sha256', $row['id_user'], false)) {
+    $_SESSION['username'] = $row['username'];
+    header("Location: index.php");
+    exit;
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

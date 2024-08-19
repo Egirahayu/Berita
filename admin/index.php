@@ -1,5 +1,6 @@
 <?php
 require 'functions.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $urls = explode("\n", trim($_POST['urls']));
   $site = $_POST['site'];
@@ -21,6 +22,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
 }
+
+session_start();
+
+if (!isset($_SESSION["username"])) {
+  header("Location: login.php");
+  exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="../img/Logo2.png">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -167,11 +178,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="col-lg-8">
             <form method="post" action="" class="mb-5">
               <div class="mb-3">
-                <label for="urls" class="form-label">URLs to Scrape (one per line)</label>
+                <label for="urls" class="form-label">URLs to Scrape</label>
                 <input class="form-control" id="urls" name="urls" rows="5" required></input>
               </div>
               <div class="mb-3">
-                <label for="site" class="form-label">Pilih Website</label>
+                <label for="site" class="form-label">Select Website</label>
                 <select class="form-control" id="site" name="site" required>
                   <option value="kompas">Kompas</option>
                   <option value="one">One Esports</option>

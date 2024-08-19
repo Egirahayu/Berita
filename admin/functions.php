@@ -178,26 +178,8 @@ function signup($data)
 
   $password = password_hash($password, PASSWORD_DEFAULT);
 
-  $query_tambah = "INSERT INTO user VALUES('', '$username', '$password', 'user')";
+  $query_tambah = "INSERT INTO user VALUES('', '$username', '$password', '')";
   mysqli_query($conn, $query_tambah);
-
-  return mysqli_affected_rows($conn);
-}
-
-// Forgot Password
-function forgot($data)
-{
-  $conn = koneksi();
-  $username = strtolower(stripcslashes($data["username"]));
-  $password = mysqli_real_escape_string($conn, $data["password"]);
-
-
-  $password = password_hash($password, PASSWORD_DEFAULT);
-
-  $query_forgot = "UPDATE user SET
-                     password = '$password'
-                     WHERE username = '$username'";
-  mysqli_query($conn, $query_forgot);
 
   return mysqli_affected_rows($conn);
 }
@@ -213,20 +195,6 @@ function cari($keyword)
                 publish LIKE '%$keyword%' OR
                 nama_category LIKE '$keyword' OR
                 nama_author LIKE '%$keyword%'
-                ";
-  return query($query);
-}
-
-function cariCategory($keyword, $nama_category)
-{
-  $query = "SELECT posts.id, judul, img, view, body, publish, nama_category, nama_author FROM posts
-                JOIN category ON posts.category_id = category.id
-                JOIN author ON posts.author_id = author.id
-                WHERE
-                (judul LIKE '%$keyword%' OR
-                publish LIKE '%$keyword%' OR
-                nama_author LIKE '%$keyword%') AND
-                nama_category = '$nama_category'
                 ";
   return query($query);
 }

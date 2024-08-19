@@ -1,3 +1,22 @@
+<?php
+require 'functions.php';
+
+if (isset($_POST["submit"])) {
+
+  if (signup($_POST) > 0) {
+    echo "<script>
+            alert('Successful Registration');
+            document.location.href = 'login.php';
+          </script>";
+  } else {
+    echo "<script>
+            alert('Registration Failed');
+          </script>";
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
