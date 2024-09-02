@@ -1,9 +1,48 @@
+<?php
+require 'admin/functions.php';
+
+$id = $_GET['id'];
+if (isset($_POST['add_comment'])) {
+    if (add_comment($_POST) > 0) {
+        header("Location: single.php?id=$id");
+    } else {
+        echo "<script>
+            alert('Data Failed to add!');
+            document.location.href = 'index.php';
+          </script>";
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Memeriksa apakah kolom komentar tidak kosong
+    if (empty($_POST["add_comment"])) {
+        $error_message = "Kolom komentar tidak boleh kosong.";
+    }
+}
+
+$posts = query("SELECT posts.id, category_id, category.name_category, title, img, view, coment, body, date, author
+FROM posts 
+JOIN category ON posts.category_id = category.id
+WHERE posts.id = $id")[0];
+
+tambahViews($id);
+
+$catID = $posts['category_id'];
+$relatedposts = query("SELECT posts.id, category.name_category, title, view, coment, body, date, author
+FROM posts
+JOIN category ON posts.category_id = category.id");
+
+$comments = query("SELECT id, parent_id, name, comment, date, post_id
+FROM comment
+WHERE post_id = $id AND parent_id = 0 ;");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>HOYNEWS | Home</title>
+    <title>HOYNEWS | Details</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- Favicon -->
@@ -59,14 +98,6 @@
                         <a href="category.php" class="nav-item nav-link">Category</a>
                         <a href="contact.php" class="nav-item nav-link">Contact</a>
                     </div>
-                    <div class="input-group" style="width: 100%; max-width: 300px;">
-                        <form action="" method="POST">
-                            <div class="input-group-append">
-                                <input style="width: 260px;" type="text" name="keyword" class="form-control" placeholder="search" value="<?= isset($keyword) ? $keyword : '' ?>">
-                                <button type="submit" name="cari" class="input-group-text text-secondary"><i class="fa fa-search"></i></button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </nav>
         </div>
@@ -79,8 +110,8 @@
                     <nav class="breadcrumb bg-transparent m-0 p-0">
                         <a class="breadcrumb-item" href="index.php">Home</a>
                         <a class="breadcrumb-item" href="category.php">Category</a>
-                        <a class="breadcrumb-item" href="">Technology</a>
-                        <span class="breadcrumb-item active">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, cumque.</span>
+                        <a class="breadcrumb-item" href="<?= $posts['name_category']; ?>.php"><?= $posts['name_category']; ?></a>
+                        <span class="breadcrumb-item active"><?= $posts['title']; ?></span>
                     </nav>
                 </div>
             </div>
@@ -95,31 +126,20 @@
                         <img class="img-fluid w-100" src="img/EVOS M1.jpg" style="object-fit: cover;">
                         <div class="bg-white border border-top-0 p-4">
                             <div class="mb-3">
-                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">Business</a>
-                                <a class="text-body" href="">Jan 01, 2045</a>
+                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href=""><?= $posts['name_category']; ?></a>
+                                <a class="text-body" href=""><?= date("F d, Y", strtotime($posts['date'])); ?></a>
                             </div>
-                            <h1 class="mb-3 text-secondary text-uppercase font-weight-bold">Lorem ipsum dolor sit amet elit vitae porta diam...</h1>
-                            <p>Sadipscing labore amet rebum est et justo gubergren. Et eirmod ipsum sit diam ut
-                                magna lorem. Nonumy vero labore lorem sanctus rebum et lorem magna kasd, stet
-                                amet magna accusam consetetur eirmod. Kasd accusam sit ipsum sadipscing et at at
-                                sanctus et. Ipsum sit gubergren dolores et, consetetur justo invidunt at et
-                                aliquyam ut et vero clita. Diam sea sea no sed dolores diam nonumy, gubergren
-                                sit stet no diam kasd vero.</p>
-                            <p>Voluptua est takimata stet invidunt sed rebum nonumy stet, clita aliquyam dolores
-                                vero stet consetetur elitr takimata rebum sanctus. Sit sed accusam stet sit
-                                nonumy kasd diam dolores, sanctus lorem kasd duo dolor dolor vero sit et. Labore
-                                ipsum duo sanctus amet eos et. Consetetur no sed et aliquyam ipsum justo et,
-                                clita lorem sit vero amet amet est dolor elitr, stet et no diam sit. Dolor erat
-                                justo dolore sit invidunt.</p>
+                            <h1 class="mb-3 text-secondary text-uppercase font-weight-bold"><?= $posts['title']; ?></h1>
+                            <p><?= nl2br($posts['body']); ?></p>
                         </div>
                         <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
                             <div class="d-flex align-items-center">
                                 <img class="rounded-circle mr-2" src="img/user.png" width=" 25" height="25" alt="">
-                                <span>John Doe</span>
+                                <span><?= $posts['author']; ?></span>
                             </div>
                             <div class="d-flex align-items-center">
-                                <span class="ml-3"><i class="far fa-eye mr-2"></i>12345</span>
-                                <span class="ml-3"><i class="far fa-comment mr-2"></i>123</span>
+                                <span class="ml-3"><i class="far fa-eye mr-2"></i><?= $posts['view']; ?></span>
+                                <span class="ml-3"><i class="far fa-comment mr-2"></i><?= $posts['coment']; ?></span>
                             </div>
                         </div>
                     </div>
@@ -128,73 +148,83 @@
                 <div class="col-lg-8">
                     <div class="mb-3">
                         <div class="section-title mb-0">
-                            <h4 class="m-0 text-uppercase font-weight-bold">3 Comments</h4>
-                        </div>
-                        <div class="bg-white border border-top-0 p-4">
-                            <div class="media mb-4">
-                                <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                <div class="media-body">
-                                    <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                                    <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                                        accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                    <button class="btn btn-sm btn-outline-secondary">Reply</button>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                <div class="media-body">
-                                    <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                                    <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                                        accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                    <button class="btn btn-sm btn-outline-secondary">Reply</button>
-                                    <div class="media mt-4">
-                                        <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                        <div class="media-body">
-                                            <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                                            <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor
-                                                labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed
-                                                eirmod ipsum.</p>
-                                            <button class="btn btn-sm btn-outline-secondary">Reply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="section-title mb-0">
                             <h4 class="m-0 text-uppercase font-weight-bold">Leave a comment</h4>
                         </div>
                         <div class="bg-white border border-top-0 p-4">
-                            <form>
-                                <div class="form-row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="name">Name *</label>
-                                            <input type="text" class="form-control" id="name">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="email">Email *</label>
-                                            <input type="email" class="form-control" id="email">
-                                        </div>
-                                    </div>
+                            <form action="" method="post">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" name="name">
                                 </div>
                                 <div class="form-group">
-                                    <label for="website">Website</label>
-                                    <input type="url" class="form-control" id="website">
+                                    <input type="number" class="form-control" name="parent_id" value="0" hidden>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="date" value="<?= date('Y-m-d H:i:s'); ?>" hidden>
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" class="form-control" name="post_id" value="<?= $id; ?>" hidden>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="message">Message *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                    <label for="comment">Message</label>
+                                    <textarea name="comment" cols="30" rows="5" class="form-control" id="comment"></textarea>
                                 </div>
                                 <div class="form-group mb-0">
-                                    <input type="submit" value="Leave a comment" class="btn btn-primary font-weight-semi-bold py-2 px-3">
+                                    <input type="submit" value="Leave a comment" id="replyButton" name="add_comment" class="btn btn-primary font-weight-semi-bold py-2 px-3">
                                 </div>
                             </form>
+                        </div>
+                    </div>
+
+                    <div class=" mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">3 Comments</h4>
+                        </div>
+                        <div class="bg-white border border-top-0 p-4">
+                            <?php foreach ($comments as $comment) : ?>
+                                <div class="media">
+                                    <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                    <div class="media-body">
+                                        <h6><a class="text-secondary font-weight-bold" href=""><?= $comment['name']; ?></a> <small><i><?= date("d F Y H:i:s", strtotime($comment['date'])); ?></i></small></h6>
+                                        <p><?= $comment['comment']; ?></p>
+
+                                        <form action="" method="post">
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" class="form-control" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" name="parent_id" value="<?= $comment['id']; ?>" hidden>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="tanggal" value="<?= date('Y-m-d H:i:s'); ?>" hidden>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" name="post_id" value="<?= $id; ?>" hidden>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="comment">Message</label>
+                                                <textarea name="comment" cols="30" rows="1" class="form-control"></textarea>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-secondary" type="submit" name="add_comment">Reply</button>
+                                        </form>
+
+                                        <?php
+                                        $replys = query("SELECT id, parent_id, name, comment, date, post_id FROM `comment` WHERE parent_id = $comment[id];");
+                                        foreach ($replys as $reply) : ?>
+                                            <div class="media mt-4">
+                                                <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                                <div class="media-body">
+                                                    <h6><a class="text-secondary font-weight-bold" href=""><?= $reply['name']; ?></a> <small><i>01 Jan 2045</i></small></h6>
+                                                    <p><?= $reply['comment']; ?></p>
+                                                    <button class="btn btn-sm btn-outline-secondary">Reply</button>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -205,16 +235,18 @@
                             <h4 class="m-0 text-uppercase font-weight-bold">Tranding News</h4>
                         </div>
                         <div class="bg-white border border-top-0 p-3">
-                            <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
-                                <img class="img-fluid" src="img/EVOS.jpg" alt="" style="height: 90px; width: 125px;">
-                                <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
-                                    <div class="mb-2">
-                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">Business</a>
-                                        <a class="text-body" href=""><small>Jan 01, 2045</small></a>
+                            <?php foreach ($relatedposts as $related) : ?>
+                                <div class="d-flex align-items-center bg-white mb-3">
+                                    <img class="img-fluid" src="img/EVOS.jpg" alt="" style="height: 75px; width: 100px;">
+                                    <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                                        <div class="mb-2">
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" style="color: #ffffff;" href=""><?= $related['name_category']; ?></a>
+                                            <a class="text-body" href=""><small><?= date("F d, Y", strtotime($related['date'])); ?></small></a>
+                                        </div>
+                                        <a class="h6 m-0 text-secondary text-uppercase font-weight-bold" href="single.php?id=<?= $related['id']; ?>"><?= $related['title']; ?></a>
                                     </div>
-                                    <a class="h6 m-0 text-secondary text-uppercase font-weight-bold" href="">Lorem ipsum dolor sit amet elit...</a>
                                 </div>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>

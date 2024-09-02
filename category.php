@@ -53,14 +53,6 @@
                         <a href="category.php" class="nav-item nav-link active">Category</a>
                         <a href="contact.php" class="nav-item nav-link">Contact</a>
                     </div>
-                    <div class="input-group" style="width: 100%; max-width: 300px;">
-                        <form action="" method="POST">
-                            <div class="input-group-append">
-                                <input style="width: 260px;" type="text" name="keyword" class="form-control" placeholder="search" value="<?= isset($keyword) ? $keyword : '' ?>">
-                                <button type="submit" name="cari" class="input-group-text text-secondary"><i class="fa fa-search"></i></button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </nav>
         </div>

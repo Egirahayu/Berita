@@ -42,12 +42,14 @@ function scrape_data($url, $site)
       if ($bodyDiv) {
         $paragraphs = $bodyDiv->find('p');
         $allTexts = [];
-        foreach ($paragraphs as $p) {
-          if (!$p->class) {
-            $allTexts[] = $p->plaintext;
+        if (!$bodyDiv->find('div.twitter-tweet') && !$bodyDiv->find('iframe.instagram-media')) {
+          foreach ($paragraphs as $p) {
+            if (!$p->find('a.inner-link-baca-juga')) {
+              $allTexts[] = $p->plaintext;
+            }
           }
         }
-        $body = implode("\n", $allTexts);
+        $body = implode("\n\n", $allTexts);
       }
       break;
 
@@ -73,7 +75,7 @@ function scrape_data($url, $site)
             $allTexts[] = $p->plaintext;
           }
         }
-        $body = implode("\n", $allTexts);
+        $body = implode("\n\n", $allTexts);
       }
       break;
 
@@ -96,10 +98,12 @@ function add_posts($data)
   $title = mysqli_real_escape_string($conn, htmlspecialchars($data['title']));
   $body = mysqli_real_escape_string($conn, htmlspecialchars($data['body']));
   $author = mysqli_real_escape_string($conn, htmlspecialchars($data['author']));
+  $category_id = mysqli_real_escape_string($conn, htmlspecialchars($data['category_id']));
+  $date = mysqli_real_escape_string($conn, htmlspecialchars($data['date']));
 
   $query = "INSERT INTO posts
               VALUES
-              ('', '$title', '', '', '', '$body', '', '$author')";
+              ('', '$category_id', '$title', '', '', '', '$body', '$date', '$author')";
 
   mysqli_query($conn, $query);
 
@@ -123,30 +127,21 @@ function delete_category($id)
   return mysqli_affected_rows($conn);
 }
 
-// Author
-function delete_author($id)
-{
-  $conn = koneksi();
-
-  mysqli_query($conn, "DELETE FROM author WHERE id = $id");
-  return mysqli_affected_rows($conn);
-}
-
 // Comment
 function add_comment($data)
 {
   $conn = koneksi();
 
   $parent_id = htmlspecialchars($data['parent_id']);
+  $name = htmlspecialchars($data['name']);
   $comment = htmlspecialchars($data['comment']);
-  $tanggal = htmlspecialchars($data['tanggal']);
-  $user_id = htmlspecialchars($data['user_id']);
+  $date = htmlspecialchars($data['date']);
   $post_id = htmlspecialchars($data['post_id']);
 
 
   $query = "INSERT INTO comment
               VALUES
-            ('', '$parent_id', '$comment','$tanggal','$user_id','$post_id')";
+            ('', '$parent_id', '$name', '$comment', '$date', '$post_id')";
 
   mysqli_query($conn, $query);
 

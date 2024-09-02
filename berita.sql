@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2024 at 06:17 PM
+-- Generation Time: Aug 28, 2024 at 07:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -41,6 +41,7 @@ CREATE TABLE `category` (
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL,
   `parent_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `comment` text NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `post_id` int(11) NOT NULL

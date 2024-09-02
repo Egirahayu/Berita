@@ -1,22 +1,29 @@
 <?php
 require 'functions.php';
 
+$category = query("SELECT category.id, name_category FROM category");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $urls = explode("\n", trim($_POST['urls']));
   $site = $_POST['site'];
+  $category_id = $_POST['category_id'];
+  $date = $_POST['date'];
 
   foreach ($urls as $url) {
     $url = trim($url);
     if (!empty($url)) {
       $data = scrape_data($url, $site);
 
+      $data['category_id'] = $category_id;
+      $data['date'] = $date;
+
       if (add_posts($data) > 0) {
         echo "<script>
-                alert('Data Added successfully!');
+                alert('Data added successfully!');
               </script>";
       } else {
         echo "<script>
-                alert('Data Failed to add!');
+                alert('Data failed to add!');
               </script>";
       }
     }
@@ -186,6 +193,18 @@ if (!isset($_SESSION["username"])) {
                 <select class="form-control" id="site" name="site" required>
                   <option value="kompas">Kompas</option>
                   <option value="one">One Esports</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="date" class="form-label">URLs to Scrape</label>
+                <input type="date" class="form-control" id="date" name="date" rows="5" required></input>
+              </div>
+              <div class="mb-3">
+                <label for="category_id" class="form-label">Category</label>
+                <select class="form-control" id="category_id" name="category_id" required>
+                  <?php foreach ($category as $categories) : ?>
+                    <option value="<?= $categories['id']; ?>"><?= $categories['name_category']; ?></option>
+                  <?php endforeach; ?>
                 </select>
               </div>
               <button type="submit" class="btn btn-primary">Scrape and Save</button>
