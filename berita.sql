@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2024 at 07:37 PM
+-- Generation Time: Sep 02, 2024 at 06:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -55,14 +55,27 @@ CREATE TABLE `comment` (
 
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
   `title` varchar(250) NOT NULL,
   `img` varchar(50) NOT NULL,
-  `view` int(11) NOT NULL,
-  `coment` int(11) NOT NULL,
   `body` text NOT NULL,
   `date` date NOT NULL,
-  `author` varchar(100) NOT NULL
+  `author` varchar(100) NOT NULL,
+  `view` int(11) NOT NULL,
+  `coment` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `url_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `urls`
+--
+
+CREATE TABLE `urls` (
+  `id` int(11) NOT NULL,
+  `url_posts` varchar(250) NOT NULL,
+  `website` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -100,7 +113,14 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FOREIGN` (`category_id`);
+  ADD KEY `category_id` (`category_id`),
+  ADD KEY `url_id` (`url_id`);
+
+--
+-- Indexes for table `urls`
+--
+ALTER TABLE `urls`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user`
@@ -131,6 +151,12 @@ ALTER TABLE `posts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `urls`
+--
+ALTER TABLE `urls`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
@@ -150,7 +176,8 @@ ALTER TABLE `comment`
 -- Constraints for table `posts`
 --
 ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`url_id`) REFERENCES `urls` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

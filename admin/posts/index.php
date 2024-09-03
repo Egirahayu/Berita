@@ -1,5 +1,10 @@
 <?php
-// require '../functions.php';
+require '../functions.php';
+
+$posts = query("SELECT posts.id, title, date, category.name_category, author, view
+FROM posts
+JOIN category ON posts.category_id = category.id
+ORDER BY posts.id ASC");
 
 session_start();
 
@@ -145,10 +150,11 @@ if (!isset($_SESSION["username"])) {
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col" width="350px">Tittle</th>
+                  <th scope="col" width="350px">Title</th>
                   <th scope="col">Publist at</th>
                   <th scope="col">Category</th>
                   <th scope="col">Author</th>
+                  <th scope="col">View</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -156,21 +162,21 @@ if (!isset($_SESSION["username"])) {
               <?php $i = 1; ?>
 
               <tbody>
-                <!-- <?php foreach ($posts as $post) : ?>
+                <?php foreach ($posts as $post) : ?>
                   <tr>
                     <td><?= $i; ?>.</td>
-                    <td><?= $post['judul']; ?></td>
-                    <td><?= date("F d, Y", strtotime($post['publish'])); ?></td>
-                    <td><?= $post['nama_category']; ?></td>
-                    <td><?= $post['nama_author']; ?></td>
+                    <td><?= $post['title']; ?></td>
+                    <td><?= date("F d, Y", strtotime($post['date'])); ?></td>
+                    <td><?= $post['name_category']; ?></td>
+                    <td><?= $post['author']; ?></td>
+                    <td><?= $post['view']; ?></td>
                     <td>
-                      <a href="../php/posts/show.php?id=<?= $post['id']; ?>" class="badge bg-info"><span data-feather="eye" style="width: 18px;"></span></a>
-                      <a href="../php/posts/edit.php?id=<?= $post['id']; ?>" class="badge bg-warning"><span data-feather="edit" style="width: 18px;"></span></a>
-                      <a href="../php/posts/delete.php?id=<?= $post['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>
+                      <a href="show.php?id=<?= $post['id']; ?>" class="badge bg-info"><span data-feather="eye" style="width: 18px;"></span></a>
+                      <a href="delete.php?id=<?= $post['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>
                     </td>
                   </tr>
                   <?php $i++; ?>
-                <?php endforeach; ?> -->
+                <?php endforeach; ?>
               </tbody>
             </table>
           </div>

@@ -20,9 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$posts = query("SELECT posts.id, category_id, category.name_category, title, img, view, coment, body, date, author
+$posts = query("SELECT posts.id, category_id, category.name_category, urls.id, urls.url_posts, urls.website, title, img, view, coment, body, date, author
 FROM posts 
 JOIN category ON posts.category_id = category.id
+JOIN urls ON posts.url_id = urls.id
 WHERE posts.id = $id")[0];
 
 tambahViews($id);
@@ -129,6 +130,7 @@ WHERE post_id = $id AND parent_id = 0 ;");
                                 <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href=""><?= $posts['name_category']; ?></a>
                                 <a class="text-body" href=""><?= date("F d, Y", strtotime($posts['date'])); ?></a>
                             </div>
+                            <p>Source: <a class="text-body" href="<?= $posts['url_posts']; ?>"><?= ucwords($posts['website']); ?></a></p>
                             <h1 class="mb-3 text-secondary text-uppercase font-weight-bold"><?= $posts['title']; ?></h1>
                             <p><?= nl2br($posts['body']); ?></p>
                         </div>

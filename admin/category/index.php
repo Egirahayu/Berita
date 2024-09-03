@@ -1,5 +1,7 @@
 <?php
-// require '../functions.php';
+require '../functions.php';
+
+$category = query("SELECT id, name_category FROM category");
 
 session_start();
 
@@ -141,6 +143,8 @@ if (!isset($_SESSION["username"])) {
           </div>
 
           <div class="table-responsive col-lg-4">
+            <a href="create.php" class="btn btn-primary mb-3">Create Category</a>
+
             <table class="table table-bordered  table-striped table-sm">
               <thead>
                 <tr>
@@ -153,17 +157,17 @@ if (!isset($_SESSION["username"])) {
               <?php $i = 1; ?>
 
               <tbody>
-                <!-- <?php foreach ($category as $categories) : ?>
+                <?php foreach ($category as $categories) : ?>
                   <tr>
                     <td><?= $i; ?>.</td>
-                    <td><?= $categories['nama_category']; ?></td>
+                    <td><?= $categories['name_category']; ?></td>
                     <td>
-                      <a href="../php/category/edit.php?id=<?= $categories['id']; ?>" class="badge bg-warning"><span data-feather="edit" style="width: 18px;"></span></a>
-                      <a href="../php/category/delete.php?id=<?= $categories['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>
+                      <a href="edit.php?id=<?= $categories['id']; ?>" class="badge bg-warning"><span data-feather="edit" style="width: 18px;"></span></a>
+                      <a href="delete.php?id=<?= $categories['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>
                     </td>
                   </tr>
                   <?php $i++; ?>
-                <?php endforeach; ?> -->
+                <?php endforeach; ?>
               </tbody>
             </table>
           </div>

@@ -17,7 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $data['category_id'] = $category_id;
       $data['date'] = $date;
 
-      if (add_posts($data) > 0) {
+      $url_id = add_url($url, $site);
+
+      if ($url_id && add_posts($data, $url_id) > 0) {
         echo "<script>
                 alert('Data added successfully!');
               </script>";
@@ -119,7 +121,7 @@ if (!isset($_SESSION["username"])) {
           <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="index.php">
+                <a class="nav-link active d-flex align-items-center gap-2" href="index.php">
                   <svg class="bi">
                     <use xlink:href="#file-earmark-text" />
                   </svg>
@@ -191,12 +193,13 @@ if (!isset($_SESSION["username"])) {
               <div class="mb-3">
                 <label for="site" class="form-label">Select Website</label>
                 <select class="form-control" id="site" name="site" required>
-                  <option value="kompas">Kompas</option>
-                  <option value="one">One Esports</option>
+                  <option value="Kompas">Kompas</option>
+                  <option value="One Esports">One Esports</option>
+                  <option value="Detik">Detik Sport</option>
                 </select>
               </div>
               <div class="mb-3">
-                <label for="date" class="form-label">URLs to Scrape</label>
+                <label for="date" class="form-label">Date</label>
                 <input type="date" class="form-control" id="date" name="date" rows="5" required></input>
               </div>
               <div class="mb-3">

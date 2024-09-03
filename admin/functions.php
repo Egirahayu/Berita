@@ -25,7 +25,7 @@ function scrape_data($url, $site)
   $html = file_get_html($url);
 
   switch ($site) {
-    case 'kompas':
+    case 'Kompas':
       $titleDiv = $html->find('div.col-bs10-10', 0);
       if ($titleDiv) {
         $titleElement = $titleDiv->find('h1.read__title', 0);
@@ -42,18 +42,16 @@ function scrape_data($url, $site)
       if ($bodyDiv) {
         $paragraphs = $bodyDiv->find('p');
         $allTexts = [];
-        if (!$bodyDiv->find('div.twitter-tweet') && !$bodyDiv->find('iframe.instagram-media')) {
-          foreach ($paragraphs as $p) {
-            if (!$p->find('a.inner-link-baca-juga')) {
-              $allTexts[] = $p->plaintext;
-            }
+        foreach ($paragraphs as $p) {
+          if (!$p->find('a.inner-link-baca-juga')) {
+            $allTexts[] = $p->plaintext;
           }
         }
         $body = implode("\n\n", $allTexts);
       }
       break;
 
-    case 'one':
+    case 'One Esports':
       $titleDiv = $html->find('div.col-lg-8', 0);
       if ($titleDiv) {
         $titleElement = $titleDiv->find('h1.post-title', 0);
@@ -67,6 +65,29 @@ function scrape_data($url, $site)
       }
 
       $bodyDiv = $html->find('div.post-content', 0);
+      if ($bodyDiv) {
+        $paragraphs = $bodyDiv->find('p');
+        $allTexts = [];
+        foreach ($paragraphs as $p) {
+          if (!$p->find('a')) {
+            $allTexts[] = $p->plaintext;
+          }
+        }
+        $body = implode("\n\n", $allTexts);
+      }
+      break;
+
+    case 'Detik':
+      $titleDiv = $html->find('div.detail__header', 0);
+      if ($titleDiv) {
+        $titleElement = $titleDiv->find('h1.detail__title', 0);
+        $title = $titleElement->plaintext;
+      }
+
+      $authorElement = $html->find('div.detail__author', 0);
+      $author = $authorElement->plaintext;
+
+      $bodyDiv = $html->find('div.detail__body-text', 0);
       if ($bodyDiv) {
         $paragraphs = $bodyDiv->find('p');
         $allTexts = [];
@@ -91,7 +112,7 @@ function scrape_data($url, $site)
 }
 
 // Posts
-function add_posts($data)
+function add_posts($data, $url_id)
 {
   $conn = koneksi();
 
@@ -103,7 +124,7 @@ function add_posts($data)
 
   $query = "INSERT INTO posts
               VALUES
-              ('', '$category_id', '$title', '', '', '', '$body', '$date', '$author')";
+              ('', '$title', '', '$body', '$date', '$author', '', '', '$category_id', '$url_id')";
 
   mysqli_query($conn, $query);
 
@@ -118,7 +139,60 @@ function delete_posts($id)
   return mysqli_affected_rows($conn);
 }
 
+// Urls
+function add_url($url, $site)
+{
+  $conn = koneksi();
+
+  $urls = mysqli_real_escape_string($conn, htmlspecialchars($url));
+  $website = mysqli_real_escape_string($conn, htmlspecialchars($site));
+
+  $query = "INSERT INTO urls
+              VALUES
+              ('', '$urls', '$website')";
+
+  if (mysqli_query($conn, $query)) {
+    return mysqli_insert_id($conn);
+  } else {
+    return false;
+  }
+
+  return mysqli_affected_rows($conn);
+}
+
 // Category
+function add_category($data)
+{
+  $conn = koneksi();
+
+  $name_category = htmlspecialchars($data['name_category']);
+
+  $query = "INSERT INTO category
+              VALUES
+            ('', '$name_category')";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}
+
+function update_category($data)
+{
+  $conn = koneksi();
+
+  $id = ($data['id']);
+  $name_category = htmlspecialchars($data['name_category']);
+
+  $query = "UPDATE category SET
+                name_category = '$name_category'
+                WHERE id = '$id'
+                ";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}
+
 function delete_category($id)
 {
   $conn = koneksi();
@@ -137,7 +211,6 @@ function add_comment($data)
   $comment = htmlspecialchars($data['comment']);
   $date = htmlspecialchars($data['date']);
   $post_id = htmlspecialchars($data['post_id']);
-
 
   $query = "INSERT INTO comment
               VALUES

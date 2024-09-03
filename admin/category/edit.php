@@ -1,12 +1,27 @@
 <?php
 require '../functions.php';
 
-$author = query("SELECT DISTINCT author FROM posts");
+$id = $_GET['id'];
+$category = query("SELECT id, name_category FROM category WHERE category.id = $id")[0];
+
+if (isset($_POST['update_category'])) {
+  if (update_category($_POST) > 0) {
+    echo "<script>
+            alert('Data Successfully update!');
+            document.location.href = 'index.php';
+          </script>";
+  } else {
+    echo "<script>
+            alert('Data Failed to update!');
+            document.location.href = 'index.php';
+          </script>";
+  }
+}
 
 session_start();
 
 if (!isset($_SESSION["username"])) {
-  header("Location: ../login.php");
+  header("Location: ../../login.php");
   exit;
 }
 ?>
@@ -95,7 +110,7 @@ if (!isset($_SESSION["username"])) {
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../category/index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="index.php">
                   <svg class="bi">
                     <use xlink:href="#cart" />
                   </svg>
@@ -103,7 +118,7 @@ if (!isset($_SESSION["username"])) {
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="../author/index.php">
                   <svg class="bi">
                     <use xlink:href="#people" />
                   </svg>
@@ -139,30 +154,18 @@ if (!isset($_SESSION["username"])) {
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="container">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Author</h1>
+            <h1 class="h2">Edit New Category</h1>
           </div>
 
-          <div class="table-responsive col-lg-4">
-            <table class="table table-bordered  table-striped table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Author</th>
-                </tr>
-              </thead>
-
-              <?php $i = 1; ?>
-
-              <tbody>
-                <?php foreach ($author as $auth) : ?>
-                  <tr>
-                    <td><?= $i; ?>.</td>
-                    <td><?= $auth['author']; ?></td>
-                  </tr>
-                  <?php $i++; ?>
-                <?php endforeach; ?>
-              </tbody>
-            </table>
+          <div class="col-lg-8">
+            <form method="post" action="" class="mb-5">
+              <input type="hidden" name="id" id="id" value="<?= $category["id"] ?>">
+              <div class="mb-3">
+                <label for="name_category" class="form-label">Name Category</label>
+                <input class="form-control" id="name_category" name="name_category" rows="5" required value="<?= $category["name_category"]; ?>"></input>
+              </div>
+              <button type="submit" class="btn btn-primary" name="update_category">Update Data!</button>
+            </form>
           </div>
         </div>
       </main>
@@ -170,7 +173,7 @@ if (!isset($_SESSION["username"])) {
   </div>
 
   <!-- JS Dashboard -->
-  <script src="../js/dashboard.js"></script>
+  <script src="../dashboard.js"></script>
   <!-- JS Feather icon -->
   <script src="https://unpkg.com/feather-icons"></script>
   <!-- JS Bootstrap -->
