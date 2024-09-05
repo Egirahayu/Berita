@@ -1,15 +1,20 @@
 <?php
 require '../functions.php';
 
-$posts = query("SELECT posts.id, title, date, category.name_category, author, view
-FROM posts
+$id = $_GET['id'];
+$posts = query("SELECT posts.id, category_id, category.name_category, urls.id, urls.url_posts, urls.website, title, img, view, body, date, author
+FROM posts 
 JOIN category ON posts.category_id = category.id
-ORDER BY posts.id ASC");
+JOIN urls ON posts.url_id = urls.id
+WHERE posts.id = $id")[0];
+
+$coment = query("SELECT COUNT(*) FROM comment WHERE post_id = $id");
+$comentCount = $coment[0]['COUNT(*)'];
 
 session_start();
 
 if (!isset($_SESSION["username"])) {
-  header("Location: ../login.php");
+  header("Location: login.php");
   exit;
 }
 ?>
@@ -24,18 +29,19 @@ if (!isset($_SESSION["username"])) {
   <!-- Favicon -->
   <link rel="shortcut icon" href="../../img/Logo2.png">
 
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+
   <!-- Css Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-  <!-- Datatable -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-
   <!-- Css Icon Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
   <!-- Css Dashboard -->
   <link href="../dashboard.css" rel="stylesheet">
 
@@ -148,11 +154,11 @@ if (!isset($_SESSION["username"])) {
 
             <ul class="nav flex-column mb-auto">
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../logout.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="../login.php">
                   <svg class="bi">
                     <use xlink:href="#door-closed" />
                   </svg>
-                  Logout
+                  Sign out
                 </a>
               </li>
             </ul>
@@ -162,44 +168,29 @@ if (!isset($_SESSION["username"])) {
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="container">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Posts</h1>
-          </div>
-
-          <div class="table-responsive col-lg-12">
-            <table id="myTable" class="table table-bordered  table-striped table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col" width="350px">Title</th>
-                  <th scope="col">Publist at</th>
-                  <th scope="col">Category</th>
-                  <th scope="col">Author</th>
-                  <th scope="col">View</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-
-              <?php $i = 1; ?>
-
-              <tbody>
-                <?php foreach ($posts as $post) : ?>
-                  <tr>
-                    <td><?= $i; ?>.</td>
-                    <td><?= $post['title']; ?></td>
-                    <td><?= date("F d, Y", strtotime($post['date'])); ?></td>
-                    <td><?= $post['name_category']; ?></td>
-                    <td><?= $post['author']; ?></td>
-                    <td><?= $post['view']; ?></td>
-                    <td>
-                      <a href="show.php?id=<?= $post['id']; ?>" class="badge bg-info"><span data-feather="eye" style="width: 18px;"></span></a>
-                      <a href="delete.php?id=<?= $post['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>
-                    </td>
-                  </tr>
-                  <?php $i++; ?>
-                <?php endforeach; ?>
-              </tbody>
-            </table>
+          <div class="col-lg-10 pt-3 pb-2">
+            <div class="position-relative mb-3 text-light">
+              <img class="img-fluid w-100" src="../../img/EVOS M1.jpg" style="object-fit: cover;">
+              <div class="bg-secondary border border-top-0 p-4">
+                <div class="mb-3">
+                  <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="#"><?= $posts['name_category']; ?></a>
+                  <a class="text-light"><?= date("F d, Y", strtotime($posts['date'])); ?></a>
+                </div>
+                <p>Source: <a class="text-light" href="<?= $posts['url_posts']; ?>"><?= ucwords($posts['website']); ?></a></p>
+                <h1 class="mb-3 text-light text-uppercase font-weight-bold"><?= $posts['title']; ?></h1>
+                <p><?= nl2br($posts['body']); ?></p>
+              </div>
+              <div class="d-flex justify-content-between bg-secondary border border-top-0 p-4">
+                <div class="d-flex align-items-center">
+                  <img class="rounded-circle mr-2" src="../../img/user.png" width=" 25" height="25" alt="">
+                  <span><?= $posts['author']; ?></span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="ml-3"><i class="far fa-eye mr-2"></i><?= $posts['view']; ?></span>
+                  <span class="ml-3"><i class="far fa-comment mr-2"></i><?= $comentCount; ?></span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
@@ -215,12 +206,6 @@ if (!isset($_SESSION["username"])) {
 
   <script>
     feather.replace();
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('#myTable').DataTable();
-    });
   </script>
 </body>
 

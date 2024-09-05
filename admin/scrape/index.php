@@ -1,15 +1,41 @@
 <?php
 require '../functions.php';
 
-$posts = query("SELECT posts.id, title, date, category.name_category, author, view
-FROM posts
-JOIN category ON posts.category_id = category.id
-ORDER BY posts.id ASC");
+$category = query("SELECT category.id, name_category FROM category");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $urls = explode("\n", trim($_POST['urls']));
+  $site = $_POST['site'];
+  $category_id = $_POST['category_id'];
+  $date = $_POST['date'];
+
+  foreach ($urls as $url) {
+    $url = trim($url);
+    if (!empty($url)) {
+      $data = scrape_data($url, $site);
+
+      $data['category_id'] = $category_id;
+      $data['date'] = $date;
+
+      $url_id = add_url($url, $site);
+
+      if ($url_id && add_posts($data, $url_id) > 0) {
+        echo "<script>
+                alert('Data added successfully!');
+              </script>";
+      } else {
+        echo "<script>
+                alert('Data failed to add!');
+              </script>";
+      }
+    }
+  }
+}
 
 session_start();
 
 if (!isset($_SESSION["username"])) {
-  header("Location: ../login.php");
+  header("Location: login.php");
   exit;
 }
 ?>
@@ -24,15 +50,15 @@ if (!isset($_SESSION["username"])) {
   <!-- Favicon -->
   <link rel="shortcut icon" href="../../img/Logo2.png">
 
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+
   <!-- Css Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-  <!-- Datatable -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
   <!-- Css Icon Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -103,7 +129,7 @@ if (!isset($_SESSION["username"])) {
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="../scrape/index.php">
+                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="index.php">
                   <svg class="bi">
                     <use xlink:href="#file-earmark-text" />
                   </svg>
@@ -111,7 +137,7 @@ if (!isset($_SESSION["username"])) {
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="index.php">
+                <a class="nav-link d-flex align-items-center gap-2" href="../posts/index.php">
                   <svg class="bi">
                     <use xlink:href="#file-earmark-text" />
                   </svg>
@@ -163,43 +189,37 @@ if (!isset($_SESSION["username"])) {
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="container">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Posts</h1>
+            <h1 class="h2">Create New Posts</h1>
           </div>
 
-          <div class="table-responsive col-lg-12">
-            <table id="myTable" class="table table-bordered  table-striped table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col" width="350px">Title</th>
-                  <th scope="col">Publist at</th>
-                  <th scope="col">Category</th>
-                  <th scope="col">Author</th>
-                  <th scope="col">View</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-
-              <?php $i = 1; ?>
-
-              <tbody>
-                <?php foreach ($posts as $post) : ?>
-                  <tr>
-                    <td><?= $i; ?>.</td>
-                    <td><?= $post['title']; ?></td>
-                    <td><?= date("F d, Y", strtotime($post['date'])); ?></td>
-                    <td><?= $post['name_category']; ?></td>
-                    <td><?= $post['author']; ?></td>
-                    <td><?= $post['view']; ?></td>
-                    <td>
-                      <a href="show.php?id=<?= $post['id']; ?>" class="badge bg-info"><span data-feather="eye" style="width: 18px;"></span></a>
-                      <a href="delete.php?id=<?= $post['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>
-                    </td>
-                  </tr>
-                  <?php $i++; ?>
-                <?php endforeach; ?>
-              </tbody>
-            </table>
+          <div class="col-lg-8">
+            <form method="post" action="" class="mb-5">
+              <div class="mb-3">
+                <label for="urls" class="form-label">URLs to Scrape</label>
+                <input class="form-control" id="urls" name="urls" rows="5" required></input>
+              </div>
+              <div class="mb-3">
+                <label for="site" class="form-label">Select Website</label>
+                <select class="form-control" id="site" name="site" required>
+                  <option value="Kompas">Kompas</option>
+                  <option value="One Esports">One Esports</option>
+                  <option value="Detik">Detik Sport</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" id="date" name="date" rows="5" required></input>
+              </div>
+              <div class="mb-3">
+                <label for="category_id" class="form-label">Category</label>
+                <select class="form-control" id="category_id" name="category_id" required>
+                  <?php foreach ($category as $categories) : ?>
+                    <option value="<?= $categories['id']; ?>"><?= $categories['name_category']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Scrape and Save</button>
+            </form>
           </div>
         </div>
       </main>
@@ -215,12 +235,6 @@ if (!isset($_SESSION["username"])) {
 
   <script>
     feather.replace();
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('#myTable').DataTable();
-    });
   </script>
 </body>
 

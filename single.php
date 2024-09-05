@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$posts = query("SELECT posts.id, category_id, category.name_category, urls.id, urls.url_posts, urls.website, title, img, view, coment, body, date, author
+$posts = query("SELECT posts.id, category_id, category.name_category, urls.id, urls.url_posts, urls.website, title, img, view, body, date, author
 FROM posts 
 JOIN category ON posts.category_id = category.id
 JOIN urls ON posts.url_id = urls.id
@@ -29,13 +29,19 @@ WHERE posts.id = $id")[0];
 tambahViews($id);
 
 $catID = $posts['category_id'];
-$relatedposts = query("SELECT posts.id, category.name_category, title, view, coment, body, date, author
+$relatedposts = query("SELECT posts.id, title, img, body, posts.date, author, view, category_id, category.name_category
 FROM posts
-JOIN category ON posts.category_id = category.id");
+JOIN category ON posts.category_id = category.id
+WHERE category_id = $catID
+ORDER BY date DESC
+LIMIT 5");
 
-$comments = query("SELECT id, parent_id, name, comment, date, post_id
+$comments = query("SELECT id, parent_id, comment.name, comment, comment.date, post_id
 FROM comment
-WHERE post_id = $id AND parent_id = 0 ;");
+WHERE post_id = $id AND parent_id = 0");
+
+$coment = query("SELECT COUNT(*) FROM comment WHERE post_id = $id");
+$comentCount = $coment[0]['COUNT(*)'];
 ?>
 
 <!DOCTYPE html>
@@ -141,7 +147,7 @@ WHERE post_id = $id AND parent_id = 0 ;");
                             </div>
                             <div class="d-flex align-items-center">
                                 <span class="ml-3"><i class="far fa-eye mr-2"></i><?= $posts['view']; ?></span>
-                                <span class="ml-3"><i class="far fa-comment mr-2"></i><?= $posts['coment']; ?></span>
+                                <span class="ml-3"><i class="far fa-comment mr-2"></i><?= $comentCount; ?></span>
                             </div>
                         </div>
                     </div>
@@ -181,14 +187,14 @@ WHERE post_id = $id AND parent_id = 0 ;");
 
                     <div class=" mb-3">
                         <div class="section-title mb-0">
-                            <h4 class="m-0 text-uppercase font-weight-bold">3 Comments</h4>
+                            <h4 class="m-0 text-uppercase font-weight-bold"><?= $comentCount; ?> Comments</h4>
                         </div>
                         <div class="bg-white border border-top-0 p-4">
                             <?php foreach ($comments as $comment) : ?>
                                 <div class="media">
                                     <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                     <div class="media-body">
-                                        <h6><a class="text-secondary font-weight-bold" href=""><?= $comment['name']; ?></a> <small><i><?= date("d F Y H:i:s", strtotime($comment['date'])); ?></i></small></h6>
+                                        <h6><a class="text-secondary font-weight-bold" href=""><?= ucwords($comment['name']); ?></a> <small><i><?= date("d F Y H:i:s", strtotime($comment['date'])); ?></i></small></h6>
                                         <p><?= $comment['comment']; ?></p>
 
                                         <form action="" method="post">
@@ -200,7 +206,7 @@ WHERE post_id = $id AND parent_id = 0 ;");
                                                 <input type="number" class="form-control" name="parent_id" value="<?= $comment['id']; ?>" hidden>
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="tanggal" value="<?= date('Y-m-d H:i:s'); ?>" hidden>
+                                                <input type="text" class="form-control" name="date" value="<?= date('Y-m-d H:i:s'); ?>" hidden>
                                             </div>
                                             <div class="form-group">
                                                 <input type="number" class="form-control" name="post_id" value="<?= $id; ?>" hidden>
@@ -218,9 +224,8 @@ WHERE post_id = $id AND parent_id = 0 ;");
                                             <div class="media mt-4">
                                                 <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                                 <div class="media-body">
-                                                    <h6><a class="text-secondary font-weight-bold" href=""><?= $reply['name']; ?></a> <small><i>01 Jan 2045</i></small></h6>
+                                                    <h6><a class="text-secondary font-weight-bold" href=""><?= ucwords($reply['name']); ?></a> <small><i><?= date("d F Y H:i:s", strtotime($reply['date'])); ?></i></i></small></h6>
                                                     <p><?= $reply['comment']; ?></p>
-                                                    <button class="btn btn-sm btn-outline-secondary">Reply</button>
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
@@ -234,7 +239,7 @@ WHERE post_id = $id AND parent_id = 0 ;");
                 <div class="col-lg-4">
                     <div class="mb-3">
                         <div class="section-title mb-0">
-                            <h4 class="m-0 text-uppercase font-weight-bold">Tranding News</h4>
+                            <h4 class="m-0 text-uppercase font-weight-bold">Related News</h4>
                         </div>
                         <div class="bg-white border border-top-0 p-3">
                             <?php foreach ($relatedposts as $related) : ?>

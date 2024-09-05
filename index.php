@@ -1,11 +1,13 @@
 <?php
 require 'admin/functions.php';
 
-$posts = query("SELECT posts.id, category.name_category, title, view, coment, body, date, author
+$posts = query("SELECT posts.id, title, img, body, posts.date, author, view, category.name_category, COUNT(comment.id) AS comment_count
 FROM posts
-JOIN category ON posts.category_id = category.id");
+JOIN category ON posts.category_id = category.id
+LEFT JOIN comment ON posts.id = comment.post_id
+GROUP BY posts.id");
 
-$trandingposts = query("SELECT posts.id, category.name_category, title, view, coment, body, date, author
+$trandingposts = query("SELECT posts.id, category.name_category, title, view, body, date, author
 FROM posts
 JOIN category ON posts.category_id = category.id");
 
@@ -148,7 +150,7 @@ if (isset($_POST["cari"])) {
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <small class="ml-3"><i class="far fa-eye mr-2"></i><?= $post['view']; ?></small>
-                                                <small class="ml-3"><i class="far fa-comment mr-2"></i><?= $post['coment']; ?></small>
+                                                <small class="ml-3"><i class="far fa-comment mr-2"></i><?= $post['comment_count']; ?></small>
                                             </div>
                                         </div>
                                     </div>
