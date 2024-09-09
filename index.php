@@ -5,11 +5,21 @@ $posts = query("SELECT posts.id, title, img, body, posts.date, author, view, cat
 FROM posts
 JOIN category ON posts.category_id = category.id
 LEFT JOIN comment ON posts.id = comment.post_id
-GROUP BY posts.id");
+GROUP BY posts.id
+ORDER BY posts.date DESC
+LIMIT 4");
 
-$trandingposts = query("SELECT posts.id, category.name_category, title, view, body, date, author
+$trandingposts = query("SELECT posts.id, category.name_category, title, img, view, body, date, author
 FROM posts
-JOIN category ON posts.category_id = category.id");
+JOIN category ON posts.category_id = category.id
+ORDER BY posts.view DESC
+LIMIT 5");
+
+$header = query("SELECT posts.id, category.name_category, title, img, view, body, date, author
+FROM posts
+JOIN category ON posts.category_id = category.id
+ORDER BY posts.date DESC
+LIMIT 3");
 
 if (isset($_POST["cari"])) {
     $keyword = $_POST["keyword"];
@@ -91,26 +101,29 @@ if (isset($_POST["cari"])) {
         </div>
     </header>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 px-0">
-                <div class="owl-carousel main-carousel position-relative">
-                    <?php foreach ($trandingposts as $Tpost) : ?>
-                        <div class="position-relative overflow-hidden" style="height: 530px;">
-                            <img class="img-fluid h-100" src="img/EVOS M1.jpg" style="object-fit: cover;">
-                            <div class="overlay">
-                                <div class="mb-2">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="" style="color: #ffffff;"><?= $Tpost['name_category']; ?></a>
-                                    <a class="text-white" href=""><?= date("F d, Y", strtotime($Tpost['date'])); ?></a>
+    <?php $isSearching = isset($_POST["cari"]); ?>
+    <?php if (!$isSearching) : ?>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 px-0">
+                    <div class="owl-carousel main-carousel position-relative">
+                        <?php foreach ($header as $head) : ?>
+                            <div class="position-relative overflow-hidden" style="height: 530px;">
+                                <img class="img-fluid h-100" src="img/<?= $head['img']; ?>" style="object-fit: cover;">
+                                <div class="overlay">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="" style="color: #ffffff;"><?= $head['name_category']; ?></a>
+                                        <a class="text-white" href=""><?= date("F d, Y", strtotime($head['date'])); ?></a>
+                                    </div>
+                                    <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="single.php?id=<?= $head['id']; ?>"><?= $head['title']; ?></a>
                                 </div>
-                                <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="single.php?id=<?= $Tpost['id']; ?>"><?= $Tpost['title']; ?></a>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
 
     <div class="container-fluid">
         <div class="container">
@@ -120,7 +133,7 @@ if (isset($_POST["cari"])) {
                         <div class="col-12">
                             <div class="section-title">
                                 <h4 class="m-0 text-uppercase font-weight-bold">Latest News</h4>
-                                <a class="text-secondary font-weight-medium text-decoration-none" href="">View All</a>
+                                <a class="text-secondary font-weight-medium text-decoration-none" href="latest.php">View All</a>
                             </div>
                         </div>
 
@@ -130,11 +143,10 @@ if (isset($_POST["cari"])) {
                             <?php foreach ($posts as $post) :
                                 $text = explode(' ', $post['body']);
                                 $textcut = implode(' ', array_slice($text, 0, 20));
-
                             ?>
                                 <div class="col-lg-6">
                                     <div class="position-relative mb-3">
-                                        <img class="img-fluid w-100" src="img/EVOS M1.jpg" style="object-fit: cover;">
+                                        <img class="img-fluid w-100" src="img/<?= $post['img']; ?>" style="object-fit: cover; height: 250px;">
                                         <div class="bg-white border border-top-0 p-4">
                                             <div class="mb-2">
                                                 <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" style="color: #ffffff;" href="category.php?id=<?= $post['name_category']; ?>"><?= $post['name_category']; ?></a>
@@ -168,7 +180,7 @@ if (isset($_POST["cari"])) {
                         <div class="bg-white border border-top-0 p-3">
                             <?php foreach ($trandingposts as $Tpost) : ?>
                                 <div class="d-flex align-items-center bg-white mb-3">
-                                    <img class="img-fluid" src="img/EVOS.jpg" alt="" style="height: 75; width: 100px;">
+                                    <img class="img-fluid" src="img/<?= $Tpost['img']; ?>" alt="" style="height: 75; width: 100px;">
                                     <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                         <div class="mb-2">
                                             <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" style="color: #ffffff;" href=""><?= $Tpost['name_category']; ?></a>

@@ -124,7 +124,7 @@ function add_posts($data, $url_id)
 
   $query = "INSERT INTO posts
               VALUES
-              ('', '$title', '', '$body', '$date', '$author', '', '', '$category_id', '$url_id')";
+              ('', '$title', '', '$body', '$date', '$author', '', '$category_id', '$url_id')";
 
   mysqli_query($conn, $query);
 
@@ -255,14 +255,15 @@ function signup($data)
 // Searching
 function cari($keyword)
 {
-  $query = "SELECT posts.id, judul, img, view, body, publish, nama_category, nama_author FROM posts
+  $query = "SELECT posts.id, title, img, body, posts.date, author, view, category.name_category, COUNT(comment.id) AS comment_count 
+                FROM posts
                 JOIN category ON posts.category_id = category.id
-                JOIN author ON posts.author_id = author.id
+                LEFT JOIN comment ON posts.id = comment.post_id
                 WHERE
-                judul LIKE '%$keyword%' OR
-                publish LIKE '%$keyword%' OR
-                nama_category LIKE '$keyword' OR
-                nama_author LIKE '%$keyword%'
+                title LIKE '%$keyword%' OR
+                posts.date LIKE '%$keyword%' OR
+                name_category LIKE '$keyword'
+                GROUP BY posts.id
                 ";
   return query($query);
 }

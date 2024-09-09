@@ -4,7 +4,7 @@ require '../functions.php';
 $posts = query("SELECT posts.id, title, date, category.name_category, author, view
 FROM posts
 JOIN category ON posts.category_id = category.id
-ORDER BY posts.id ASC");
+ORDER BY posts.date DESC");
 
 session_start();
 

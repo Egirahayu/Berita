@@ -170,7 +170,7 @@ if (!isset($_SESSION["username"])) {
         <div class="container">
           <div class="col-lg-10 pt-3 pb-2">
             <div class="position-relative mb-3 text-light">
-              <img class="img-fluid w-100" src="../../img/EVOS M1.jpg" style="object-fit: cover;">
+              <img class="img-fluid w-100" src="../../img/<?= $posts['img']; ?>" style="object-fit: cover;">
               <div class="bg-secondary border border-top-0 p-4">
                 <div class="mb-3">
                   <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="#"><?= $posts['name_category']; ?></a>
@@ -178,7 +178,7 @@ if (!isset($_SESSION["username"])) {
                 </div>
                 <p>Source: <a class="text-light" href="<?= $posts['url_posts']; ?>"><?= ucwords($posts['website']); ?></a></p>
                 <h1 class="mb-3 text-light text-uppercase font-weight-bold"><?= $posts['title']; ?></h1>
-                <p><?= nl2br($posts['body']); ?></p>
+                <p><a class="text-light font-weight-bold" href="<?= $posts['url_posts']; ?>"><?= strtoupper($posts['website']); ?></a> - <?= nl2br($posts['body']); ?></p>
               </div>
               <div class="d-flex justify-content-between bg-secondary border border-top-0 p-4">
                 <div class="d-flex align-items-center">

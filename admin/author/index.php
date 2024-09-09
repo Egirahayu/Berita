@@ -1,7 +1,9 @@
 <?php
 require '../functions.php';
 
-$author = query("SELECT DISTINCT author FROM posts");
+$author = query("SELECT DISTINCT author, website
+FROM posts
+JOIN urls ON posts.url_id = urls.id");
 
 session_start();
 
@@ -169,6 +171,7 @@ if (!isset($_SESSION["username"])) {
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Author</th>
+                  <th scope="col">Media</th>
                 </tr>
               </thead>
 
@@ -179,6 +182,7 @@ if (!isset($_SESSION["username"])) {
                   <tr>
                     <td><?= $i; ?>.</td>
                     <td><?= $auth['author']; ?></td>
+                    <td><?= $auth['website']; ?></td>
                   </tr>
                   <?php $i++; ?>
                 <?php endforeach; ?>
