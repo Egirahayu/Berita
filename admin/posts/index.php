@@ -175,7 +175,6 @@ if (!isset($_SESSION["username"])) {
                   <th scope="col">Publist at</th>
                   <th scope="col">Category</th>
                   <th scope="col">Author</th>
-                  <th scope="col">View</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -190,7 +189,6 @@ if (!isset($_SESSION["username"])) {
                     <td><?= date("F d, Y", strtotime($post['date'])); ?></td>
                     <td><?= $post['name_category']; ?></td>
                     <td><?= $post['author']; ?></td>
-                    <td><?= $post['view']; ?></td>
                     <td>
                       <a href="show.php?id=<?= $post['id']; ?>" class="badge bg-info"><span data-feather="eye" style="width: 18px;"></span></a>
                       <a href="delete.php?id=<?= $post['id']; ?>" class="badge bg-danger" onclick="return confirm('Hapus Data?')"><span data-feather="x-circle" style="width: 18px;"></span></a>

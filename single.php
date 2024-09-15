@@ -130,7 +130,7 @@ $comentCount = $coment[0]['COUNT(*)'];
             <div class="row">
                 <div class="col-lg-12">
                     <div class="position-relative mb-3">
-                        <img class="img-fluid w-100" src="img/EVOS M1.jpg" style="object-fit: cover;">
+                        <img class="img-fluid w-100" src="img/<?= $posts['img']; ?>" style="object-fit: cover;">
                         <div class="bg-white border border-top-0 p-4">
                             <div class="mb-3">
                                 <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href=""><?= $posts['name_category']; ?></a>
@@ -192,7 +192,7 @@ $comentCount = $coment[0]['COUNT(*)'];
                         <div class="bg-white border border-top-0 p-4">
                             <?php foreach ($comments as $comment) : ?>
                                 <div class="media">
-                                    <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                    <img src="img/user.png" alt="Image" class="img-fluid mr-3 mt-1" style="height: 75; width: 100px;">
                                     <div class="media-body">
                                         <h6><a class="text-secondary font-weight-bold" href=""><?= ucwords($comment['name']); ?></a> <small><i><?= date("d F Y H:i:s", strtotime($comment['date'])); ?></i></small></h6>
                                         <p><?= $comment['comment']; ?></p>
@@ -244,7 +244,7 @@ $comentCount = $coment[0]['COUNT(*)'];
                         <div class="bg-white border border-top-0 p-3">
                             <?php foreach ($relatedposts as $related) : ?>
                                 <div class="d-flex align-items-center bg-white mb-3">
-                                    <img class="img-fluid" src="img/EVOS.jpg" alt="" style="height: 75px; width: 100px;">
+                                    <img class="img-fluid" src="img/<?= $related['img']; ?>" alt="" style="height: 75px; width: 100px;">
                                     <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                         <div class="mb-2">
                                             <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" style="color: #ffffff;" href=""><?= $related['name_category']; ?></a>

@@ -1,6 +1,14 @@
 <?php
 require 'functions.php';
 
+$recentlyposts = query("SELECT posts.id, title, img, body, posts.date, author, view, category.name_category, COUNT(comment.id) AS comment_count
+FROM posts
+JOIN category ON posts.category_id = category.id
+LEFT JOIN comment ON posts.id = comment.post_id
+GROUP BY posts.id
+ORDER BY posts.id DESC
+LIMIT 4");
+
 $posts = query("SELECT COUNT(*) FROM posts");
 $postsCount = $posts[0]['COUNT(*)'];
 
@@ -12,6 +20,30 @@ $authorCount = $author[0]['COUNT(DISTINCT author)'];
 
 $comment = query("SELECT COUNT(*) FROM comment");
 $commentCount = $comment[0]['COUNT(*)'];
+
+$postscat = query("SELECT name_category, COUNT(*) as total 
+FROM posts
+JOIN category ON posts.category_id = category.id
+GROUP BY name_category");
+
+$colors = ['#f56954', '#00a65a', '#00c0ef', '#3c8dbc', '#f39c12', '#d2d6de'];
+$index = 0;
+
+$media = query("SELECT DISTINCT website, COUNT(DISTINCT author) as total
+FROM posts
+JOIN urls ON posts.url_id = urls.id
+GROUP BY website");
+
+$labels = [];
+$data = [];
+
+foreach ($media as $key => $row) {
+  $labels[] = $row['website'];
+  $data[] = [$key + 1, $row['total']];
+}
+
+$labels_json = json_encode($labels);
+$data_json = json_encode($data);
 
 session_start();
 
@@ -34,6 +66,9 @@ if (!isset($_SESSION["username"])) {
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Jquery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
@@ -220,13 +255,88 @@ if (!isset($_SESSION["username"])) {
               </div>
             </div>
           </div>
-        </div>
+
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Posts</h3>
+              </div>
+
+              <div class="card-body">
+                <div class="row">
+                  <?php foreach ($postscat as $cat) : ?>
+                    <div class="col-4 col-md-3 text-center">
+                      <input type="text" class="knob" value="<?= $cat['total']; ?>" data-width="120" data-height="120" data-fgColor="<?= $colors[$index]; ?>">
+
+                      <div class="knob-label"><?= $cat['name_category']; ?></div>
+                    </div>
+                    <?php $index = ($index + 1) % count($colors); ?>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <div class="row text-light mt-3 mb-3">
+              <div class="col-lg-4 col-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">
+                      Author
+                    </h3>
+                  </div>
+                  <div class="card-body">
+                    <div id="bar-chart" style="height: 300px;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-8 col-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Recently Added Posts</h3>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="products-list product-list-in-card pl-2 pr-2">
+                      <?php foreach ($recentlyposts as $posts) :
+                        $head = explode(' ', $posts['title']);
+                        $headcut = implode(' ', array_slice($head, 0, 12));
+                        $text = explode(' ', $posts['body']);
+                        $textcut = implode(' ', array_slice($text, 0, 20));
+                      ?>
+                        <li class="item">
+                          <div class="product-img">
+                            <img src="../img/<?= $posts['img']; ?>" alt=" Product Image" class="img-size-50">
+                          </div>
+                          <div class="product-info">
+                            <a href="" class="product-title text-dark"><?= $headcut; ?>
+                              <span class="badge badge-primary float-right"><?= $posts['name_category']; ?></span></a>
+                            <span class="product-description">
+                              <?= $textcut; ?>
+                            </span>
+                          </div>
+                        </li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                  <div class="card-footer text-center">
+                    <a href="posts/index.php" class=" text-dark">View All Posts</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
       </main>
     </div>
   </div>
 
   <!-- JS Dashboard -->
   <script src="dashboard.js"></script>
+  <!-- jQuery Knob -->
+  <script src="../lib/jquery-knob/jquery.knob.min.js"></script>
+  <!-- FLOT CHARTS -->
+  <script src="../lib/flot/jquery.flot.js"></script>
   <!-- JS Feather icon -->
   <script src="https://unpkg.com/feather-icons"></script>
   <!-- JS Bootstrap -->
@@ -234,6 +344,90 @@ if (!isset($_SESSION["username"])) {
 
   <script>
     feather.replace();
+  </script>
+
+  <script>
+    $(function() {
+      $('.knob').knob({
+        draw: function() {
+          if (this.$.data('skin') == 'tron') {
+
+            var a = this.angle(this.cv),
+              sa = this.startAngle,
+              sat = this.startAngle,
+              ea,
+              eat = sat + a,
+              r = true
+
+            this.g.lineWidth = this.lineWidth
+
+            this.o.cursor &&
+              (sat = eat - 0.3) &&
+              (eat = eat + 0.3)
+
+            if (this.o.displayPrevious) {
+              ea = this.startAngle + this.angle(this.value)
+              this.o.cursor &&
+                (sa = ea - 0.3) &&
+                (ea = ea + 0.3)
+              this.g.beginPath()
+              this.g.strokeStyle = this.previousColor
+              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false)
+              this.g.stroke()
+            }
+
+            this.g.beginPath()
+            this.g.strokeStyle = r ? this.o.fgColor : this.fgColor
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false)
+            this.g.stroke()
+
+            this.g.lineWidth = 2
+            this.g.beginPath()
+            this.g.strokeStyle = this.o.fgColor
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false)
+            this.g.stroke()
+
+            return false
+          }
+        }
+      })
+
+      var data = <?= $data_json; ?>;
+      var labels = <?= $labels_json; ?>;
+
+      var ticks = [];
+      for (var i = 0; i < labels.length; i++) {
+        ticks.push([i + 1, labels[i]]);
+      }
+
+      var bar_data = {
+        data: data,
+        bars: {
+          show: true,
+          barWidth: 0.5,
+          align: 'center',
+        }
+      };
+
+      $.plot('#bar-chart', [bar_data], {
+        grid: {
+          borderWidth: 1,
+          borderColor: '#f3f3f3',
+          tickColor: '#f3f3f3'
+        },
+        series: {
+          bars: {
+            show: true,
+            barWidth: 0.5,
+            align: 'center',
+          },
+        },
+        colors: ['#3c8dbc'],
+        xaxis: {
+          ticks: ticks
+        }
+      });
+    })
   </script>
 </body>
 

@@ -261,6 +261,7 @@ function cari($keyword)
                 LEFT JOIN comment ON posts.id = comment.post_id
                 WHERE
                 title LIKE '%$keyword%' OR
+                body LIKE '%$keyword%' OR
                 posts.date LIKE '%$keyword%' OR
                 name_category LIKE '$keyword'
                 GROUP BY posts.id

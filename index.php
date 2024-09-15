@@ -21,6 +21,8 @@ JOIN category ON posts.category_id = category.id
 ORDER BY posts.date DESC
 LIMIT 3");
 
+$tags = query("SELECT id, name_category FROM category");
+
 if (isset($_POST["cari"])) {
     $keyword = $_POST["keyword"];
     $posts = cari($keyword);
@@ -112,7 +114,7 @@ if (isset($_POST["cari"])) {
                                 <img class="img-fluid h-100" src="img/<?= $head['img']; ?>" style="object-fit: cover;">
                                 <div class="overlay">
                                     <div class="mb-2">
-                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="" style="color: #ffffff;"><?= $head['name_category']; ?></a>
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="<?= $head['name_category']; ?>.php" style="color: #ffffff;"><?= $head['name_category']; ?></a>
                                         <a class="text-white" href=""><?= date("F d, Y", strtotime($head['date'])); ?></a>
                                     </div>
                                     <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="single.php?id=<?= $head['id']; ?>"><?= $head['title']; ?></a>
@@ -149,7 +151,7 @@ if (isset($_POST["cari"])) {
                                         <img class="img-fluid w-100" src="img/<?= $post['img']; ?>" style="object-fit: cover; height: 250px;">
                                         <div class="bg-white border border-top-0 p-4">
                                             <div class="mb-2">
-                                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" style="color: #ffffff;" href="category.php?id=<?= $post['name_category']; ?>"><?= $post['name_category']; ?></a>
+                                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" style="color: #ffffff;" href="<?= $post['name_category']; ?>.php"><?= $post['name_category']; ?></a>
                                                 <a class="text-body" href=""><small><?= date("F d, Y", strtotime($post['date'])); ?></small></a>
                                             </div>
                                             <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="single.php?id=<?= $post['id']; ?>"><?= $post['title']; ?></a>
@@ -183,7 +185,7 @@ if (isset($_POST["cari"])) {
                                     <img class="img-fluid" src="img/<?= $Tpost['img']; ?>" alt="" style="height: 75; width: 100px;">
                                     <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                         <div class="mb-2">
-                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" style="color: #ffffff;" href=""><?= $Tpost['name_category']; ?></a>
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" style="color: #ffffff;" href="<?= $Tpost['name_category']; ?>.php"><?= $Tpost['name_category']; ?></a>
                                             <a class="text-body" href=""><small><?= date("F d, Y", strtotime($Tpost['date'])); ?></small></a>
                                         </div>
                                         <a class="h6 m-0 text-secondary text-uppercase font-weight-bold" href="single.php?id=<?= $Tpost['id']; ?>"><?= $Tpost['title']; ?></a>
@@ -199,16 +201,9 @@ if (isset($_POST["cari"])) {
                         </div>
                         <div class="bg-white border border-top-0 p-3">
                             <div class="d-flex flex-wrap m-n1">
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Politics</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Corporate</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Health</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Education</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Science</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Foods</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary m-1">Travel</a>
+                                <?php foreach ($tags as $tag) : ?>
+                                    <a href="<?= $tag['name_category']; ?>.php" class="btn btn-sm btn-outline-secondary m-1"><?= $tag['name_category']; ?></a>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>

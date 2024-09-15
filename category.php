@@ -99,10 +99,10 @@ LIMIT 2");
                                     <img class="img-fluid w-100" src="img/<?= $sport['img']; ?>" style="object-fit: cover;">
                                     <div class="bg-white border border-top-0 p-4">
                                         <div class="mb-2">
-                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href=""><?= $sport['name_category']; ?></a>
-                                            <a class="text-body" href=""><small>Jan 01, 2045</small></a>
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="<?= $sport['name_category']; ?>.php"><?= $sport['name_category']; ?></a>
+                                            <a class="text-body" href=""><small><?= date("F d, Y", strtotime($sport['date'])); ?></small></a>
                                         </div>
-                                        <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href=""><?= $sport['title']; ?></a>
+                                        <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="single.php?id=<?= $sport['id']; ?>"><?= $sport['title']; ?></a>
                                         <p class="m-0"><?= $textcut; ?></p>
                                     </div>
                                     <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
@@ -125,7 +125,7 @@ LIMIT 2");
                         <div class="col-12">
                             <div class="section-title">
                                 <h4 class="m-0 text-uppercase font-weight-bold">Category: E-Sports</h4>
-                                <a class="text-secondary font-weight-medium text-decoration-none" href="esports.php">View All</a>
+                                <a class="text-secondary font-weight-medium text-decoration-none" href="e-sports.php">View All</a>
                             </div>
                         </div>
 
@@ -138,10 +138,10 @@ LIMIT 2");
                                     <img class="img-fluid w-100" src="img/<?= $esport['img']; ?>" style="object-fit: cover;">
                                     <div class="bg-white border border-top-0 p-4">
                                         <div class="mb-2">
-                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href=""><?= $esport['name_category']; ?></a>
-                                            <a class="text-body" href=""><small>Jan 01, 2045</small></a>
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="<?= $esport['name_category']; ?>.php"><?= $esport['name_category']; ?></a>
+                                            <a class="text-body" href=""><small><?= date("F d, Y", strtotime($esport['date'])); ?></small></a>
                                         </div>
-                                        <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href=""><?= $esport['title']; ?></a>
+                                        <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="single.php?id=<?= $esport['id']; ?>"><?= $esport['title']; ?></a>
                                         <p class="m-0"><?= $textcut; ?></p>
                                     </div>
                                     <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
