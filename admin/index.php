@@ -265,8 +265,8 @@ if (!isset($_SESSION["username"])) {
               <div class="card-body">
                 <div class="row">
                   <?php foreach ($postscat as $cat) : ?>
-                    <div class="col-4 col-md-3 text-center">
-                      <input type="text" class="knob" value="<?= $cat['total']; ?>" data-width="120" data-height="120" data-fgColor="<?= $colors[$index]; ?>">
+                    <div class="col-lg-3 col-6 col-md-4 text-center">
+                      <input class="knob" value="<?= $cat['total']; ?>" data-width="120" data-height="120" data-fgColor="<?= $colors[$index]; ?>">
 
                       <div class="knob-label"><?= $cat['name_category']; ?></div>
                     </div>
@@ -279,11 +279,11 @@ if (!isset($_SESSION["username"])) {
 
           <div class="col-lg-12">
             <div class="row text-light mt-3 mb-3">
-              <div class="col-lg-4 col-6">
+              <div class="col-lg-6 col-6">
                 <div class="card">
                   <div class="card-header">
                     <h3 class="card-title">
-                      Author
+                      Media
                     </h3>
                   </div>
                   <div class="card-body">
@@ -292,7 +292,7 @@ if (!isset($_SESSION["username"])) {
                 </div>
               </div>
 
-              <div class="col-lg-8 col-6">
+              <div class="col-lg-6 col-6">
                 <div class="card">
                   <div class="card-header">
                     <h3 class="card-title">Recently Added Posts</h3>

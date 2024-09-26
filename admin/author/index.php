@@ -3,7 +3,8 @@ require '../functions.php';
 
 $author = query("SELECT DISTINCT author, website
 FROM posts
-JOIN urls ON posts.url_id = urls.id");
+JOIN urls ON posts.url_id = urls.id
+ORDER BY website");
 
 session_start();
 
@@ -165,7 +166,7 @@ if (!isset($_SESSION["username"])) {
             <h1 class="h2">Author</h1>
           </div>
 
-          <div class="table-responsive col-lg-4">
+          <div class="table-responsive col-lg-5">
             <table class="table table-bordered  table-striped table-sm">
               <thead>
                 <tr>

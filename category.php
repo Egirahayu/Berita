@@ -7,6 +7,7 @@ JOIN category ON posts.category_id = category.id
 LEFT JOIN comment ON posts.id = comment.post_id
 WHERE name_category = 'Sports'
 GROUP BY posts.id
+ORDER BY posts.date DESC
 LIMIT 2");
 
 $esports = query("SELECT posts.id, title, img, body, posts.date, author, view, category.name_category, COUNT(comment.id) AS comment_count
@@ -15,6 +16,25 @@ JOIN category ON posts.category_id = category.id
 LEFT JOIN comment ON posts.id = comment.post_id
 WHERE name_category = 'E-Sports'
 GROUP BY posts.id
+ORDER BY posts.date DESC
+LIMIT 2");
+
+$politics = query("SELECT posts.id, title, img, body, posts.date, author, view, category.name_category, COUNT(comment.id) AS comment_count
+FROM posts
+JOIN category ON posts.category_id = category.id
+LEFT JOIN comment ON posts.id = comment.post_id
+WHERE name_category = 'Politics'
+GROUP BY posts.id
+ORDER BY posts.date DESC
+LIMIT 2");
+
+$technology = query("SELECT posts.id, title, img, body, posts.date, author, view, category.name_category, COUNT(comment.id) AS comment_count
+FROM posts
+JOIN category ON posts.category_id = category.id
+LEFT JOIN comment ON posts.id = comment.post_id
+WHERE name_category = 'Technology'
+GROUP BY posts.id
+ORDER BY posts.date DESC
 LIMIT 2");
 ?>
 
@@ -152,6 +172,87 @@ LIMIT 2");
                                         <div class="d-flex align-items-center">
                                             <small class="ml-3"><i class="far fa-eye mr-2"></i><?= $esport['view']; ?></small>
                                             <small class="ml-3"><i class="far fa-comment mr-2"></i><?= $esport['comment_count']; ?></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="section-title">
+                                <h4 class="m-0 text-uppercase font-weight-bold">Category: Politics</h4>
+                                <a class="text-secondary font-weight-medium text-decoration-none" href="politics.php">View All</a>
+                            </div>
+                        </div>
+
+                        <?php foreach ($politics as $politic) :
+                            $text = explode(' ', $politic['body']);
+                            $textcut = implode(' ', array_slice($text, 0, 20));
+                        ?>
+                            <div class="col-lg-6">
+                                <div class="position-relative mb-3">
+                                    <img class="img-fluid w-100" src="img/<?= $politic['img']; ?>" style="object-fit: cover;">
+                                    <div class="bg-white border border-top-0 p-4">
+                                        <div class="mb-2">
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="<?= $politic['name_category']; ?>.php"><?= $politic['name_category']; ?></a>
+                                            <a class="text-body" href=""><small><?= date("F d, Y", strtotime($politic['date'])); ?></small></a>
+                                        </div>
+                                        <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="single.php?id=<?= $politic['id']; ?>"><?= $politic['title']; ?></a>
+                                        <p class="m-0"><?= $textcut; ?></p>
+                                    </div>
+                                    <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                        <div class="d-flex align-items-center">
+                                            <img class="rounded-circle mr-2" src="img/user.png" width="25" height="25" alt="">
+                                            <small><?= $politic['author']; ?></small>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <small class="ml-3"><i class="far fa-eye mr-2"></i><?= $politic['view']; ?></small>
+                                            <small class="ml-3"><i class="far fa-comment mr-2"></i><?= $politic['comment_count']; ?></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="section-title">
+                                <h4 class="m-0 text-uppercase font-weight-bold">Category: Technology</h4>
+                                <a class="text-secondary font-weight-medium text-decoration-none" href="technology.php">View All</a>
+                            </div>
+                        </div>
+
+                        <?php foreach ($technology as $techno) :
+                            $text = explode(' ', $techno['body']);
+                            $textcut = implode(' ', array_slice($text, 0, 20));
+                        ?>
+                            <div class="col-lg-6">
+                                <div class="position-relative mb-3">
+                                    <img class="img-fluid w-100" src="img/<?= $techno['img']; ?>" style="object-fit: cover;">
+                                    <div class="bg-white border border-top-0 p-4">
+                                        <div class="mb-2">
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="<?= $techno['name_category']; ?>.php"><?= $techno['name_category']; ?></a>
+                                            <a class="text-body" href=""><small><?= date("F d, Y", strtotime($techno['date'])); ?></small></a>
+                                        </div>
+                                        <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="single.php?id=<?= $techno['id']; ?>"><?= $techno['title']; ?></a>
+                                        <p class="m-0"><?= $textcut; ?></p>
+                                    </div>
+                                    <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                        <div class="d-flex align-items-center">
+                                            <img class="rounded-circle mr-2" src="img/user.png" width="25" height="25" alt="">
+                                            <small><?= $techno['author']; ?></small>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <small class="ml-3"><i class="far fa-eye mr-2"></i><?= $techno['view']; ?></small>
+                                            <small class="ml-3"><i class="far fa-comment mr-2"></i><?= $techno['comment_count']; ?></small>
                                         </div>
                                     </div>
                                 </div>

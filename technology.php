@@ -5,9 +5,10 @@ $posts = query("SELECT posts.id, title, img, body, posts.date, author, view, cat
 FROM posts
 JOIN category ON posts.category_id = category.id
 LEFT JOIN comment ON posts.id = comment.post_id
-WHERE name_category = 'Sports'
+WHERE name_category = 'Technology'
 GROUP BY posts.id
-ORDER BY posts.date DESC");
+ORDER BY posts.date DESC
+LIMIT 3");
 
 if (isset($_POST["cari"])) {
   $keyword = $_POST["keyword"];
@@ -20,7 +21,7 @@ if (isset($_POST["cari"])) {
 
 <head>
   <meta charset="utf-8">
-  <title>HOYNEWS | Sports News</title>
+  <title>HOYNEWS | Technology News</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <!-- Favicon -->
@@ -96,7 +97,7 @@ if (isset($_POST["cari"])) {
           <div class="row">
             <div class="col-12">
               <div class="section-title">
-                <h4 class="m-0 text-uppercase font-weight-bold">Sports News</h4>
+                <h4 class="m-0 text-uppercase font-weight-bold">Technology News</h4>
               </div>
             </div>
 

@@ -199,8 +199,7 @@ $comentCount = $coment[0]['COUNT(*)'];
 
                                         <form action="" method="post">
                                             <div class="form-group">
-                                                <label for="name">Name</label>
-                                                <input type="text" class="form-control" name="name">
+                                                <input type="text" class="form-control" name="name" placeholder="Name">
                                             </div>
                                             <div class="form-group">
                                                 <input type="number" class="form-control" name="parent_id" value="<?= $comment['id']; ?>" hidden>
@@ -212,8 +211,7 @@ $comentCount = $coment[0]['COUNT(*)'];
                                                 <input type="number" class="form-control" name="post_id" value="<?= $id; ?>" hidden>
                                             </div>
                                             <div class="form-group">
-                                                <label for="comment">Message</label>
-                                                <textarea name="comment" cols="30" rows="1" class="form-control"></textarea>
+                                                <textarea name="comment" cols="30" rows="1" class="form-control" placeholder="Comment"></textarea>
                                             </div>
                                             <button class="btn btn-sm btn-outline-secondary" type="submit" name="add_comment">Reply</button>
                                         </form>

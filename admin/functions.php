@@ -4,7 +4,7 @@ include('simple_html_dom.php');
 function koneksi()
 {
   $conn = mysqli_connect("localhost", "root", "");
-  mysqli_select_db($conn, "berita");
+  mysqli_select_db($conn, "hoynews");
 
   return $conn;
 }
@@ -262,9 +262,9 @@ function cari($keyword)
                 WHERE
                 title LIKE '%$keyword%' OR
                 body LIKE '%$keyword%' OR
-                posts.date LIKE '%$keyword%' OR
                 name_category LIKE '$keyword'
                 GROUP BY posts.id
+                ORDER BY posts.date DESC
                 ";
   return query($query);
 }
