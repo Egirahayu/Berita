@@ -49,9 +49,6 @@ if (isset($_POST["submit"])) {
                 <h3><b>Sign Up</b></h3>
               </div>
               <form action="" method="post">
-                <!-- <?php if (isset($errorLogin)) : ?>
-                  <p style="color: red; font-style: italic;">Username atau Password salah</p>
-                <?php endif; ?> -->
                 <!-- Username -->
                 <input class="form-control main" type="text" id="username" name="username" placeholder="Username" required>
                 <!-- Password -->

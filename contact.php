@@ -67,24 +67,25 @@
                         <h4 class="m-0 text-uppercase font-weight-bold">Contact Us</h4>
                     </div>
                     <div class="bg-white border border-top-0 p-4 mb-3">
-                        <form>
+                        <div id="success"></div>
+                        <form name="hoynews-contact-form" id="contactForm" novalidate="novalidate">
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control p-4" placeholder="Your Name" required="required" />
+                                        <input type="text" name="name" class="form-control p-4" placeholder="Your Name" required="required" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="email" class="form-control p-4" placeholder="Your Email" required="required" />
+                                        <input type="email" name="email" class="form-control p-4" placeholder="Your Email" required="required" />
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control p-4" placeholder="Subject" required="required" />
+                                <input type="text" name="subject" class="form-control p-4" placeholder="Subject" required="required" />
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" rows="4" placeholder="Message" required="required"></textarea>
+                                <textarea class="form-control" name="message" rows="4" placeholder="Message" required="required"></textarea>
                             </div>
                             <div>
                                 <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit">Send Message</button>
@@ -109,12 +110,25 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
+    <script src="js/jqBootstrapValidation.min.js"></script>
+    <script src="js/contact.js"></script>
 
-    <!-- Template Javascript -->
+    <!-- Javascript -->
     <script src="js/main.js"></script>
     <script type="text/javascript">
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzeOSWKc8mvsWwZHPJ60PD9JtHzv_5w1622jZQX8hjpLp03sS04o6p5uXJMDqGnywwIDg/exec'
+        const form = document.forms['hoynews-contact-form']
+
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, {
+                    method: 'POST',
+                    body: new FormData(form)
+                })
+                .then(response => console.log('Success!', response))
+                .catch(error => console.error('Error!', error.message))
+        })
+
         window.onload = function() {
             jam();
             observer()

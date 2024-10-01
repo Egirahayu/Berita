@@ -228,7 +228,7 @@ if (isset($_POST["cari"])) {
     <script src="mail/jqBootstrapValidation.min.js"></script>
     <script src="mail/contact.js"></script>
 
-    <!-- Template Javascript -->
+    <!-- Javascript -->
     <script src="js/main.js"></script>
     <script type="text/javascript">
         window.onload = function() {

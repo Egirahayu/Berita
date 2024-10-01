@@ -81,9 +81,9 @@ if (isset($_COOKIE['username']) && isset($_COOKIE['hash'])) {
                 <h3><b>Login</b></h3>
               </div>
               <form action="" method="post">
-                <!-- <?php if (isset($errorLogin)) : ?>
+                <?php if (isset($errorLogin)) : ?>
                   <p style="color: red; font-style: italic;">Username atau Password salah</p>
-                <?php endif; ?> -->
+                <?php endif; ?>
                 <!-- Username -->
                 <input class="form-control main box" type="text" id="username" name="username" placeholder="Username" required>
                 <!-- Password -->

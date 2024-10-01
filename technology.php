@@ -151,7 +151,7 @@ if (isset($_POST["cari"])) {
   <script src="lib/easing/easing.min.js"></script>
   <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-  <!-- Template Javascript -->
+  <!-- Javascript -->
   <script src="js/main.js"></script>
   <script type="text/javascript">
     window.onload = function() {
